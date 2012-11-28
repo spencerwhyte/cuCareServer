@@ -56,7 +56,7 @@ int ServerXMLRequest::fillXMLRequest(QMap<QString, QVariant> &xmlMapping, QStrin
                   Any other number is the error code
   */
 int ServerXMLRequest::requestTypeForUrl(XMLRequestType &type, const QString & url){
-    QStringList components = url.split(QString("/"));
+    QStringList &components = url.split(QString("/"));
     QString typeString = components.at(0);
     if(typeString.compare(typeString, QString("Add"), Qt::CaseInsensitive) == 0){
         type = Add;

@@ -43,7 +43,7 @@ public:
              attribute names and their corresponding
              values
       */
-    virtual void getAttributesAndValues(QMap<QString, QVariant> * attributesAndValues) const;
+    virtual void getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const = 0;
     /*
        This method allows the implementing object
        to be constructed from a map of attributes
@@ -54,7 +54,7 @@ public:
              be made to reflect the given
              attributes and values.
       */
-    virtual void setAttributesAndValues(QMap<QString, QVariant> * attributesAndValues);
+    virtual void setAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) = 0;
     /*
         This method allows the implementing object
         to specify what type it is by giving a name
@@ -69,9 +69,9 @@ public:
       specify what key of the attributes should be
       used as the unique identifier for the object
       */
-    virtual QString getIdentifierKey() const;
+    virtual QString getIdentifierKey() const = 0;
 
-    ~StorableInterface() {};
+    virtual ~StorableInterface() {};
 
 
 };

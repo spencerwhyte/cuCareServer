@@ -13,7 +13,7 @@
   */
 int CUCareDatabase::addObject(StorableInterface * object){
     QMap<QString, QVariant> attributesAndValues;
-    object->getAttributesAndValues(&attributesAndValues);
+    object->getAttributesAndValues(attributesAndValues);
     attributesAndValues.remove(object->getIdentifierKey());
     QList<QString> keys = attributesAndValues.keys();
     QList<QVariant> values = attributesAndValues.values();
@@ -57,7 +57,7 @@ int CUCareDatabase::addObject(StorableInterface * object){
   */
 int CUCareDatabase::editObject(StorableInterface * object){
     QMap<QString, QVariant> attributesAndValues;
-    object->getAttributesAndValues(&attributesAndValues);
+    object->getAttributesAndValues(attributesAndValues);
     QVariant uniqueIdentifier = attributesAndValues.value(object->getIdentifierKey());
     attributesAndValues.remove(object->getIdentifierKey());
     QList<QString> keys = attributesAndValues.keys();
@@ -104,7 +104,7 @@ int CUCareDatabase::removeObject(StorableInterface * object){
     QSqlQuery query;
     query.prepare(queryString);
     QMap<QString, QVariant> attributesAndValues;
-    object->getAttributesAndValues(&attributesAndValues);
+    object->getAttributesAndValues(attributesAndValues);
     // Load them
     query.bindValue(0, attributesAndValues.value(object->getIdentifierKey()));
     query.exec();
@@ -122,7 +122,7 @@ int CUCareDatabase::removeObject(StorableInterface * object){
   */
 int CUCareDatabase::queryForObjects(StorableInterface * object,  QList< QMap < QString, QVariant> > * queryResults){
     QMap<QString, QVariant> attributesAndValues;
-    object->getAttributesAndValues(&attributesAndValues);
+    object->getAttributesAndValues(attributesAndValues);
     attributesAndValues.remove(object->getIdentifierKey());
     QList<QString> keys = attributesAndValues.keys();
     QList<QVariant> values = attributesAndValues.values();
@@ -177,7 +177,7 @@ bool CUCareDatabase::initializeTableWithSchemaOfObject(StorableInterface * first
     schema += firstObject->className();
     schema += " (id integer primary key";
     QMap<QString, QVariant> attributesAndValues;
-    firstObject->getAttributesAndValues(&attributesAndValues);
+    firstObject->getAttributesAndValues(attributesAndValues);
     QList<QString> keys = attributesAndValues.keys();
     QList<QVariant> values = attributesAndValues.values();
 

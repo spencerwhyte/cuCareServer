@@ -21,11 +21,11 @@ Record::~Record(){
 }
 
 // Supports compliance with the StorableInterface
-void Record::getAttributesAndValues(QMap<QString, QVariant> * attributesAndValues) const{
-    attributesAndValues->insert(QString("id",QVariant(id)));
+void Record::getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const{
+    attributesAndValues.insert(QString("id",QVariant(id)));
 }
-void Record::setAttributesAndValues(QMap<QString, QVariant> * attributesAndValues){
-    int tempID  = attributesAndValues->value(QString("id"));
+void Record::setAttributesAndValues(QMap<QString, QVariant> & attributesAndValues){
+    int tempID  = attributesAndValues.value(QString("id"));
 
     setId(tempID);
 }

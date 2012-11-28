@@ -12,14 +12,16 @@
 class StorableFactory
 {
 
-    StorableFactory& getFactory(){
+public:
+
+
+    static StorableFactory& GetFactory(){
         static StorableFactory currentFactory;
         return currentFactory;
     }
 
-    StorableInterface & getInstance(QString * className);
 
-public:
+    StorableInterface * getInstance(QString * className);
     // Constructor
     StorableFactory();
     // Destructor

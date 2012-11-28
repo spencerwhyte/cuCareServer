@@ -10,7 +10,6 @@
 #include "ServerXMLRequest.h"
 #include "StorableInterface.h"
 #include "StorableFactory.h"
-#include "ServerObjectResponse.h"
 
 /*
     The purpose of the ServerObjectRequest is to

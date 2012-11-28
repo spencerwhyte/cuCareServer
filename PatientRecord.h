@@ -36,8 +36,8 @@ public:
     void setOHIPNumber(QString * newOhipNumber);
 
     // Storable Interface Methods
-    virtual void getAttributesAndValues(QMap<QString, QVariant> * attributesAndValues) const;
-    virtual void setAttributesAndValues(QMap<QString, QVariant> * attributesAndValues);
+    virtual void getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const;
+    virtual void setAttributesAndValues(QMap<QString, QVariant> & attributesAndValues);
     virtual QString className() const;
 
     // Constructor and destructor

@@ -2,15 +2,15 @@
 
 
 
-StorableInterface& getInstance(QString * className){
+StorableInterface * StorableFactory::getInstance(QString * className){
     if(className->compare(*className, QString("ConsultationRecord"), Qt::CaseInsensitive) == 0){
-        return ConsultationRecord();
+        return new ConsultationRecord();
     }else if(className->compare(*className, QString("FollowUpRecord"), Qt::CaseInsensitive) == 0){
-        return FollowUpRecord();
+        return new FollowUpRecord();
     }else if(className->compare(*className, QString("PatientRecord"), Qt::CaseInsensitive) == 0){
-        return PatientRecord();
+        return new PatientRecord();
     }else if(className->compare(*className, QString("User"), Qt::CaseInsensitive) == 0){
-        return User();
+        return new User();
     }
     qDebug()<< "An error occured in StorableFactory.cpp when trying to construct a storable object from the string " << *className;
     return NULL;
@@ -18,11 +18,11 @@ StorableInterface& getInstance(QString * className){
 
 
 // Constructor
-StorableFactory(){
+StorableFactory::StorableFactory(){
 
 }
 
 // Destructor
-~StorableFactory(){
+StorableFactory::~StorableFactory(){
 
 }

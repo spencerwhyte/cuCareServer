@@ -33,23 +33,23 @@ void User::setUserType(UserType type){
 
 
 // Storable Interface Methods
-virtual void User::getAttributesAndValues(QMap<QString, QVariant> * attributesAndValues) const{
+void User::getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const{
     Record::getAttributesAndValues(attributesAndValues);
-    attributesAndValues->insert(QString("UserName"), QVariant(QString(*getUsername())));
-    attributesAndValues->insert(QString("UserType"), QVariant(QString(*stringForUserType())));
+    attributesAndValues.insert(QString("UserName"), QVariant(QString(*getUsername())));
+    attributesAndValues.insert(QString("UserType"), QVariant(QString(stringForUserType())));
 }
 
-virtual void User::setAttributesAndValues(QMap<QString, QVariant> * attributesAndValues){
+void User::setAttributesAndValues(QMap<QString, QVariant> & attributesAndValues){
     Record::setAttributesAndValues(attributesAndValues);
-    QString * u = new QString( attributesAndValues->value(QString("Username")).toString());
-    QString * type = new QString( attributesAndValues->value(QString("UserType")).toString());
+    QString * u = new QString( attributesAndValues.value(QString("Username")).toString());
+    QString * type = new QString( attributesAndValues.value(QString("UserType")).toString());
 
     setUsername(u);
     setUserTypeForString(type);
     delete type;
 }
 
-virtual QString className() const{
+QString User::className() const{
     static QString className("User");
     return className;
 }
@@ -66,7 +66,7 @@ QString User::stringForUserType() const{
         static QString administrator("Administrator");
         return administrator;
     }
-    return new QString("");
+    return QString("");
 }
 
 void User::setUserTypeForString(QString * u){

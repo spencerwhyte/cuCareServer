@@ -34,8 +34,8 @@ public:
     ~Record();
 
     // Supports compliance with the StorableInterface
-    virtual void getAttributesAndValues(QMap<QString, QVariant> * attributesAndValues) const;
-    virtual void setAttributesAndValues(QMap<QString, QVariant> * attributesAndValues);
+    virtual void getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const;
+    virtual void setAttributesAndValues(QMap<QString, QVariant> & attributesAndValues);
     virtual QString className() const;
     virtual QString getIdentifierKey() const;
 

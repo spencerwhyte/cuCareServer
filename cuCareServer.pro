@@ -35,9 +35,6 @@ SOURCES += main.cpp \
     CUCareDatabase.cpp \
     CUCareServer.cpp \
     CUCareServerThread.cpp \
-    HTTPRequest.cpp \
-    XMLRequest.cpp \
-    HTTPResponse.cpp \
     User.cpp \
     PatientRecord.cpp \
     ConsultationRecord.cpp \

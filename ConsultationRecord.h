@@ -19,7 +19,7 @@
   stored in the database.
 */
 
-class ConsultationRecord : Record
+class ConsultationRecord : public Record
 {
 private:
     // Private Attributes
@@ -44,8 +44,8 @@ public:
    void setDiagnosis(QString* diagnosis);
 
    // Storable Interface Methods
-   virtual void getAttributesAndValues(QMap<QString, QVariant> * attributesAndValues) const;
-   virtual void setAttributesAndValues(QMap<QString, QVariant> * attributesAndValues);
+   virtual void getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const;
+   virtual void setAttributesAndValues(QMap<QString, QVariant> & attributesAndValues);
    virtual QString className() const;
 
    // Constructor and destructor

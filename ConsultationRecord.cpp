@@ -47,20 +47,20 @@ ConsultationRecord::ConsultationRecord(): dateAndTime(new QDateTime), reason(new
 }
 
 // Storable Interface Methods
-void ConsultationRecord::getAttributesAndValues(QMap<QString, QVariant> * attributesAndValues) const{
+void ConsultationRecord::getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const{
     Record::getAttributesAndValues(attributesAndValues);
-    attributesAndValues->insert(QString("Reason"), QVariant(QString(*getReason())));
-    attributesAndValues->insert(QString("DateAndTime"), QVariant(QDateTime(*getDateAndTime())));
-    attributesAndValues->insert(QString("OHIPNumber"), QVariant(QString(*getOHIPNumber())));
-    attributesAndValues->insert(QString("Diagnosis"), QVariant(QString(*getDiagnosis())));  
+    attributesAndValues.insert(QString("Reason"), QVariant(QString(*getReason())));
+    attributesAndValues.insert(QString("DateAndTime"), QVariant(QDateTime(*getDateAndTime())));
+    attributesAndValues.insert(QString("OHIPNumber"), QVariant(QString(*getOHIPNumber())));
+    attributesAndValues.insert(QString("Diagnosis"), QVariant(QString(*getDiagnosis())));
 }
 
-void ConsultationRecord::setAttributesAndValues(QMap<QString, QVariant> * attributesAndValues){
+void ConsultationRecord::setAttributesAndValues(QMap<QString, QVariant> & attributesAndValues){
     Record::setAttributesAndValues(attributesAndValues);
-    QString * r = new QString( attributesAndValues->value(QString("Reason")).toString());
-    QDateTime * dat = new QDateTime(attributesAndValues->value(QString("DateAndTime")).toDateTime());
-    QString * o = new QString( attributesAndValues->value(QString("OHIPNumber")).toString());
-    QString * d = new QString( attributesAndValues->value(QString("Diagnosis")).toString());
+    QString * r = new QString( attributesAndValues.value(QString("Reason")).toString());
+    QDateTime * dat = new QDateTime(attributesAndValues.value(QString("DateAndTime")).toDateTime());
+    QString * o = new QString( attributesAndValues.value(QString("OHIPNumber")).toString());
+    QString * d = new QString( attributesAndValues.value(QString("Diagnosis")).toString());
 
     setReason(r);
     setDateAndTime(dat);

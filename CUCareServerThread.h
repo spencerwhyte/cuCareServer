@@ -11,6 +11,8 @@
 #include <QTcpSocket>
 #include "CUCareDatabase.h"
 
+#include "ServerObjectRequest.h"
+#include "ServerObjectResponse.h"
 
 /*
     The purpose of this class is to allow the server to handle

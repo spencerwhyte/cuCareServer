@@ -6,10 +6,10 @@
 #ifndef SERVEROBJECTRESPONSE_H
 #define SERVEROBJECTRESPONSE_H
 
-#include "ServerObjectRequest.h"
 #include "ServerXMLResponse.h"
 #include "StorableInterface.h"
 #include "CUCareDatabase.h"
+#include "ServerObjectRequest.h"
 
 
 /*
@@ -20,9 +20,6 @@
   form of an object.
 
   */
-
-
-
 
 class ServerObjectResponse : public ServerXMLResponse
 {

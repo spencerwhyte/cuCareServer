@@ -36,18 +36,18 @@ void PatientRecord::setOHIPNumber(QString * newOhipNumber){
 }
 
 // Storable Interface Methods
-void PatientRecord::getAttributesAndValues(QMap<QString, QVariant> * attributesAndValues) const{
+void PatientRecord::getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const{
     Record::getAttributesAndValues(attributesAndValues);
-    attributesAndValues->insert(QString("Name"), QVariant(QString(*getName())));
-    attributesAndValues->insert(QString("PhoneNumber"), QVariant(QString(*getPhoneNumber())));
-    attributesAndValues->insert(QString("OHIPNumber"), QVariant(QString(*getOHIPNumber())));
+    attributesAndValues.insert(QString("Name"), QVariant(QString(*getName())));
+    attributesAndValues.insert(QString("PhoneNumber"), QVariant(QString(*getPhoneNumber())));
+    attributesAndValues.insert(QString("OHIPNumber"), QVariant(QString(*getOHIPNumber())));
 }
 
-void PatientRecord::setAttributesAndValues(QMap<QString, QVariant> * attributesAndValues){
+void PatientRecord::setAttributesAndValues(QMap<QString, QVariant> & attributesAndValues){
     Record::setAttributesAndValues(attributesAndValues);
-    QString * n = new QString( attributesAndValues->value(QString("Name")).toString());
-    QString * p = new QString( attributesAndValues->value(QString("PhoneNumber")).toString());
-    QString * o = new QString( attributesAndValues->value(QString("OHIPNumber")).toString());
+    QString * n = new QString( attributesAndValues.value(QString("Name")).toString());
+    QString * p = new QString( attributesAndValues.value(QString("PhoneNumber")).toString());
+    QString * o = new QString( attributesAndValues.value(QString("OHIPNumber")).toString());
 
     setName(n);
     setPhoneNumber(p);
