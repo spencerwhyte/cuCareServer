@@ -21,6 +21,7 @@ class CUCareServer : public QTcpServer
 public:
     // Constructor
     CUCareServer(QObject *parent = 0);
+
 protected:
     // The database that will be used to store all of the information
     // for this server
@@ -31,8 +32,7 @@ private slots:
 
 
 
-    // Destructor
-    ~CUCareServer();
+
 };
 
 #endif // CUCARESERVER_H

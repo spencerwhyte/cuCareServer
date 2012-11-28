@@ -63,7 +63,7 @@ public:
         factory in the end to figure out what type
         of object to construct
       */
-    virtual QString className() const;
+    virtual QString className() const =0;
     /*
       This method allows the implementing object to
       specify what key of the attributes should be

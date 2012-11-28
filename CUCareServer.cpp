@@ -28,3 +28,4 @@ void CUCareServer::incomingConnection(int socket){
     connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
     thread->start();
 }
+

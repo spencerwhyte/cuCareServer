@@ -28,8 +28,6 @@ public:
     explicit CUCareServerThread(int s, CUCareDatabase * cd, QObject *parent = 0);
     // Begins running the thread
     void run();
-    // Destructor
-    ~CUCareServerThread();
  signals:
     // Tells us if there was an error with the current session
     // with the client
