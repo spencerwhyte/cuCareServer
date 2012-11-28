@@ -8,6 +8,8 @@
 #define SERVERHTTPREQUEST_H
 
 #include "ServerTCPRequest.h"
+#include <QStringList>
+
 
 /*
   The purpose of the ServerHTTPRequest is to transcribe
@@ -39,8 +41,13 @@ public:
       */
     int fillHTTPRequest(QString& httpBody, QString& url);
 
+
     // Destructor
     ~ServerHTTPRequest();
+
+private:
+    // Helper method for constructing http requests
+     int constructHTTPRequestFromData(QString& body, QString &url, const QString * d);
 };
 
 #endif // SERVERHTTPREQUEST_H

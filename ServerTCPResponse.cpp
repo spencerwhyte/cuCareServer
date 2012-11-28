@@ -15,21 +15,22 @@ ServerTCPResponse::ServerTCPResponse(int TCPSocket) : socket(TCPSocket){
         data - Input parameter of the data to be sent
         over TCP to the client
   */
-int fillTCPResponse(QString & data){
+int ServerTCPResponse::fillTCPResponse(QString & data){
 
     QTcpSocket tcpSocket;
     if (!tcpSocket.setSocketDescriptor(socket)) {
-        emit error(tcpSocket.error());
-        return;
+        return 1;
     }
-
-    tcpSocket.write(data);
+    QByteArray byteArrayOfData;
+    byteArrayOfData.append(data);
+    tcpSocket.write(byteArrayOfData);
     tcpSocket.waitForBytesWritten(5000);
     tcpSocket.disconnect();
+    return 0;
 }
 
 // Destructor
-~ServerTCPResponse(){
+ServerTCPResponse::~ServerTCPResponse(){
 
 }
 

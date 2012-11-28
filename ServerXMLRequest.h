@@ -12,6 +12,7 @@
 #include <QString>
 #include <QVariant>
 #include <QDomDocument>
+#include <QStringList>
 
 /*
   The server XMLRequest is responsible for transcribing

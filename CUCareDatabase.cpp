@@ -11,15 +11,15 @@
 
             object - The object to be added
   */
-int CUCareDatabase::addObject(StorableInterface * object){
+int CUCareDatabase::addObject(StorableInterface & object){
     QMap<QString, QVariant> attributesAndValues;
-    object->getAttributesAndValues(attributesAndValues);
-    attributesAndValues.remove(object->getIdentifierKey());
+    object.getAttributesAndValues(attributesAndValues);
+    attributesAndValues.remove(object.getIdentifierKey());
     QList<QString> keys = attributesAndValues.keys();
     QList<QVariant> values = attributesAndValues.values();
 
     QString queryString = QString("INSERT into ");
-    queryString += object->className();
+    queryString += object.className();
     queryString += " (";
 
     for(int i = 0 ; i < keys.length(); i++){
@@ -55,15 +55,15 @@ int CUCareDatabase::addObject(StorableInterface * object){
 
             object - The object whose information is to be updated
   */
-int CUCareDatabase::editObject(StorableInterface * object){
+int CUCareDatabase::editObject(StorableInterface & object){
     QMap<QString, QVariant> attributesAndValues;
-    object->getAttributesAndValues(attributesAndValues);
-    QVariant uniqueIdentifier = attributesAndValues.value(object->getIdentifierKey());
-    attributesAndValues.remove(object->getIdentifierKey());
+    object.getAttributesAndValues(attributesAndValues);
+    QVariant uniqueIdentifier = attributesAndValues.value(object.getIdentifierKey());
+    attributesAndValues.remove(object.getIdentifierKey());
     QList<QString> keys = attributesAndValues.keys();
     QList<QVariant> values = attributesAndValues.values();
     QString queryString = QString("UPDATE ");
-    queryString += object->className();
+    queryString += object.className();
     queryString += " SET ";
 
     for(int i = 0 ; i < keys.length(); i++){
@@ -95,18 +95,18 @@ int CUCareDatabase::editObject(StorableInterface * object){
 
             object - The object to be removed
   */
-int CUCareDatabase::removeObject(StorableInterface * object){
+int CUCareDatabase::removeObject(StorableInterface & object){
     QString queryString("DELETE FROM ");
-    queryString += object->className();
+    queryString += object.className();
 
     queryString += " WHERE id=?";
 
     QSqlQuery query;
     query.prepare(queryString);
     QMap<QString, QVariant> attributesAndValues;
-    object->getAttributesAndValues(attributesAndValues);
+    object.getAttributesAndValues(attributesAndValues);
     // Load them
-    query.bindValue(0, attributesAndValues.value(object->getIdentifierKey()));
+    query.bindValue(0, attributesAndValues.value(object.getIdentifierKey()));
     query.exec();
 
     return !(query.numRowsAffected() == 0 || query.numRowsAffected() == -1);
@@ -120,16 +120,16 @@ int CUCareDatabase::removeObject(StorableInterface * object){
             queryResults - Output parameter for the results
             of the query being requested
   */
-int CUCareDatabase::queryForObjects(StorableInterface * object,  QList< QMap < QString, QVariant> > * queryResults){
+int CUCareDatabase::queryForObjects(StorableInterface & object,  QList< QMap < QString, QVariant> > & queryResults){
     QMap<QString, QVariant> attributesAndValues;
-    object->getAttributesAndValues(attributesAndValues);
-    attributesAndValues.remove(object->getIdentifierKey());
+    object.getAttributesAndValues(attributesAndValues);
+    attributesAndValues.remove(object.getIdentifierKey());
     QList<QString> keys = attributesAndValues.keys();
     QList<QVariant> values = attributesAndValues.values();
 
 
     QString queryString("SELECT FROM ");
-    queryString += object->className();
+    queryString += object.className();
 
     queryString += " WHERE ";
     bool first = true;
@@ -148,7 +148,7 @@ int CUCareDatabase::queryForObjects(StorableInterface * object,  QList< QMap < Q
 
     QSqlQuery queryResult = executeQuery(queryString);
     while(queryResult.next()){
-        queryResults->append(queryResult.boundValues());
+        queryResults.append(queryResult.boundValues());
     }
     return true;
 }

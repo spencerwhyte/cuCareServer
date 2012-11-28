@@ -19,6 +19,10 @@ QString * PatientRecord::getOHIPNumber() const{
     return OHIPNumber;
 }
 
+QString * PatientRecord::getPrimaryPhysician() const{
+    return primaryPhysician;
+}
+
 // Setters
 void  PatientRecord::setName(QString * newName){
     delete name;
@@ -35,12 +39,18 @@ void PatientRecord::setOHIPNumber(QString * newOhipNumber){
     OHIPNumber = newOhipNumber;
 }
 
+void PatientRecord::setPrimaryPhysician(QString * newPrimaryPhysician){
+    delete primaryPhysician;
+    primaryPhysician = newPrimaryPhysician;
+}
+
 // Storable Interface Methods
 void PatientRecord::getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const{
     Record::getAttributesAndValues(attributesAndValues);
     attributesAndValues.insert(QString("Name"), QVariant(QString(*getName())));
     attributesAndValues.insert(QString("PhoneNumber"), QVariant(QString(*getPhoneNumber())));
     attributesAndValues.insert(QString("OHIPNumber"), QVariant(QString(*getOHIPNumber())));
+    attributesAndValues.insert(QString("PrimaryPhysician"), QVariant(QString(*getPrimaryPhysician())));
 }
 
 void PatientRecord::setAttributesAndValues(QMap<QString, QVariant> & attributesAndValues){
@@ -48,10 +58,12 @@ void PatientRecord::setAttributesAndValues(QMap<QString, QVariant> & attributesA
     QString * n = new QString( attributesAndValues.value(QString("Name")).toString());
     QString * p = new QString( attributesAndValues.value(QString("PhoneNumber")).toString());
     QString * o = new QString( attributesAndValues.value(QString("OHIPNumber")).toString());
+    QString * ps = new QString( attributesAndValues.value(QString("PrimaryPhysician")).toString());
 
     setName(n);
     setPhoneNumber(p);
     setOHIPNumber(o);
+    setPrimaryPhysician(ps);
 }
 
 QString PatientRecord::className() const{
@@ -60,7 +72,7 @@ QString PatientRecord::className() const{
 }
 
 // Constructor and destructor
-PatientRecord::PatientRecord(): name(new QString()), phoneNumber(new QString()), OHIPNumber(new QString()){
+PatientRecord::PatientRecord(): name(new QString()), phoneNumber(new QString()), OHIPNumber(new QString()), primaryPhysician(new QString()){
 
 }
 
@@ -68,4 +80,5 @@ PatientRecord::~PatientRecord(){
     delete name;
     delete phoneNumber;
     delete OHIPNumber;
+    delete primaryPhysician;
 }

@@ -40,19 +40,19 @@ public:
 
                 object - The object to be added
       */
-    int addObject(StorableInterface * object);
+    int addObject(StorableInterface & object);
     /*
         Updates the information pertaining to a particular object in the database
 
                 object - The object whose information is to be updated
       */
-    int editObject(StorableInterface * object);
+    int editObject(StorableInterface & object);
     /*// Adds the object to the database
         Removes the given object from the database
 
                 object - The object to be removed
       */
-    int removeObject(StorableInterface * object);
+    int removeObject(StorableInterface & object);
     /*
         Query's for all objects similar to the specified object
 
@@ -61,7 +61,7 @@ public:
                 queryResults - Output parameter for the results
                 of the query being requested
       */
-    int queryForObjects(StorableInterface * object,  QList< QMap < QString, QVariant> > * queryResults);
+    int queryForObjects(StorableInterface & object,  QList< QMap < QString, QVariant> > & queryResults);
 
     // Destructor
     ~CUCareDatabase();

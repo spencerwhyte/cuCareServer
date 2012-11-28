@@ -19,8 +19,8 @@ int ServerTCPRequest::fillTCPRequest(){
     QTcpSocket tcpSocket;
 
     if (!tcpSocket.setSocketDescriptor(TCPSocket)) {
-        emit error(tcpSocket.error());
-        return;
+
+        return 1;
     }
 
     if(tcpSocket.waitForReadyRead(50)){
@@ -29,6 +29,7 @@ int ServerTCPRequest::fillTCPRequest(){
         allData->append(readData);
 
     }
+    return 0;
 
 }
 

@@ -8,7 +8,9 @@
 #define SERVERTCPREQUEST_H
 #include <QString>
 #include <QTcpSocket>
+#include <QString>
 
+#include <QtNetwork>
 /*
   The purpose of the ServerTCPRequest is to transcribe
   data being transferred over a TCP socket into a form

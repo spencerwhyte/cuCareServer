@@ -25,8 +25,10 @@ int ServerObjectResponse::fillObjectResponse(StorableInterface& requestObject, S
         QList<QMap<QString, QVariant> > responseData;
 
         int result = database->queryForObjects(requestObject, responseData);
+        QString className = requestObject.className();
+        fillXMLResponse(responseData, className);
 
-        fillXMLResponse(responseData, requestObject.className());
+
 
         return result;
     }else{
@@ -37,14 +39,15 @@ int ServerObjectResponse::fillObjectResponse(StorableInterface& requestObject, S
        requestObject.getAttributesAndValues(data);
        responseData.append(data);
 
-       if(type == ServerObjectRequest::ObjectRequestType::Add){
+       if(type == ServerObjectRequest::Add){
             result = database->addObject(requestObject);
        }else if(type == ServerObjectRequest::Edit){
             result = database->editObject(requestObject);
        }else if(type == ServerObjectRequest::Remove){
             result = database->removeObject(requestObject);
        }
-       fillXMLResponse(responseData, requestObject.className());
+       QString className =  requestObject.className();
+       fillXMLResponse(responseData, className);
        return result;
     }
 }

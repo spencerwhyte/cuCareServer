@@ -22,9 +22,10 @@ class FollowUpRecord : public Record
 {
 public:
     typedef enum FollowUpRecordStatus{
-        Pending,
-        Overdue,
-        COMPLETE
+        PENDING,
+        OVERDUE,
+        COMPLETE,
+        INVALID
     }FollowUpRecordStatus;
 private:
     // Private attributes
@@ -36,16 +37,13 @@ public:
     void setStatus(FollowUpRecordStatus  status);
     void setDueDateTime(QDateTime * dueDateTime);
     void setDetails(QString * details);
-
+    void setStatusForString(QString * status);
     // Getters
 
     FollowUpRecordStatus getStatus() const;
     QDateTime * getDueDateTime() const;
     QString * getDetails() const;
-
-    bool hasStatus() const;
-    bool hasDueDateTime() const;
-    bool hasDetails() const;
+    QString & getStatusString() const;
 
     // Storable Interface Methods
     virtual void getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const;

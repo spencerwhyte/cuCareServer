@@ -56,7 +56,7 @@ int ServerXMLRequest::fillXMLRequest(QMap<QString, QVariant> &xmlMapping, QStrin
                   Any other number is the error code
   */
 int ServerXMLRequest::requestTypeForUrl(XMLRequestType &type, const QString & url){
-    QStringList &components = url.split(QString("/"));
+    QStringList components = url.split(QString("/"));
     QString typeString = components.at(0);
     if(typeString.compare(typeString, QString("Add"), Qt::CaseInsensitive) == 0){
         type = Add;
@@ -112,7 +112,7 @@ int ServerXMLRequest::classNameForUrl(QString &name, const QString & url){
 int ServerXMLRequest::xmlMappingForDataAndRootNode(QMap<QString, QVariant> &xmlMapping, const QString & xmlData, const QString&rootNodeName){
 
     QDomDocument doc("XMLRequest");
-    doc->setContent(xmlData);
+    doc.setContent(xmlData);
 
     QDomElement root = doc.firstChildElement(rootNodeName);
 
@@ -120,7 +120,7 @@ int ServerXMLRequest::xmlMappingForDataAndRootNode(QMap<QString, QVariant> &xmlM
 
     for(int i = 0; i< keyValues.length(); i++){
         QDomNode node = keyValues.at(i);
-        xmlMapping.insert(node.nodeName(), QVariant(keyValues.at(i)));
+        xmlMapping.insert(node.nodeName(), QVariant(node.nodeValue()));
     }
 
     return 0;
