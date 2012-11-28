@@ -1,7 +1,12 @@
-#include "HTTPRequest.h"
+/*
+  By: Spencer Whyte
+  # 100817664
+  Carleton University
+  */
 
 
 
+/*
 
 void HTTPRequest::setHeader(QStringList * h ){
     if(header){
@@ -12,7 +17,7 @@ void HTTPRequest::setHeader(QStringList * h ){
 
 
 QStringList* HTTPRequest::getHeader(){
-    return header;
+    return header;/*
 }
 
 HTTPRequest::HTTPRequestOperation HTTPRequest::getOperation(){
@@ -83,34 +88,44 @@ HTTPRequest::HTTPRequest(QTcpSocket &tcpSocket) : header(NULL)
             }
 
             QString * path = getPath();
+            QString data(tcpSocket.read(contentLength));
+            QString * responseXML = NULL;
+
             if(path ->startsWith("/login")){
                 qDebug() << "7";
 
-                QString data(tcpSocket.read(contentLength));
                 LoginRequest loginRequest(data);
+                responseXML = loginRequest.getResponse();
 
-                QString * responseXML = loginRequest.getResponse();
+            }else if(path->startsWith("/query/patient")){
+                qDebug() << "MIRACLE";
 
+                QueryPatientRequest queryRequest(data);
+                responseXML = queryRequest.getResponse();
+
+            }else if(path->startsWith("/add/consultation")){
+                AddConsultationRequest queryRequest(data);
+                responseXML = queryRequest.getResponse();
+            }else if(path->startsWith("/edit/consultation")){
+                EditConsultationRequest queryRequest(data);
+                responseXML = queryRequest.getResponse();
+            }else if(path->startsWith("/query/consultation")){
+                QueryConsultationRequest queryRequest(data);
+                responseXML = queryRequest.getResponse();
+            }else if(path->startsWith("/add/patient")){
+
+            }else if(path->startsWith("/edit/patient")){
+
+            }else if(path->startsWith("/add/patient")){
+
+            }else if(path->startsWith("/edit/patient")){
+
+            }
+            if(responseXML){
                 HTTPResponse response(responseXML);
                 QByteArray * responseData=response.getResponseData();
                 tcpSocket.write(*responseData);
                 delete responseData;
-            }else if(path->startsWith("/add/patient")){
-
-            }else if(path->startsWith("/edit/patient")){
-
-            }else if(path->startsWith("/add/patient")){
-
-            }else if(path->startsWith("/edit/patient")){
-
-            }else if(path->startsWith("/add/patient")){
-
-            }else if(path->startsWith("/edit/patient")){
-
-            }else if(path->startsWith("/add/patient")){
-
-            }else if(path->startsWith("/edit/patient")){
-
             }
             tcpSocket.flush();
             tcpSocket.waitForBytesWritten(3000);
@@ -127,3 +142,4 @@ HTTPRequest::HTTPRequest(QTcpSocket &tcpSocket) : header(NULL)
 HTTPRequest::~HTTPRequest(){
     delete header;
 }
+*/

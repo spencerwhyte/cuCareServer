@@ -1,22 +1,27 @@
+/*
+  By: Spencer Whyte
+  # 100817664
+  Carleton University
+  */
 #include "CUCareServerThread.h"
-
-
+#include "ServerObjectRequest.h"
+#include "ServerObjectResponse.h"
 
 CUCareServerThread::CUCareServerThread(int s,CUCareDatabase * cd, QObject *parent){
     centralDatabase = cd;
     socket = s;
-
-
 }
 
 void CUCareServerThread::run(){
-         qDebug() << "Running";
-         QTcpSocket tcpSocket;
-         if (!tcpSocket.setSocketDescriptor(socket)) {
-             emit error(tcpSocket.error());
-             return;
-         }
+         qDebug() << "Request received, spawning thread to handle request";
+         StorableInterface requestObject;
+         ServerObjectRequest::ObjectRequestType type;
 
-         HTTPRequest currentRequest(tcpSocket);
-         tcpSocket.disconnect();
+         ServerObjectRequest request(socket);
+         request.fillObjectRequest(requestObject, type);
+
+         ServerObjectResponse response(socket, centralDatabase);
+         response.fillObjectResponse(requestObject, type);
+
+
 }

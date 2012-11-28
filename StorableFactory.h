@@ -17,7 +17,7 @@ class StorableFactory
         return currentFactory;
     }
 
-    StorableInterface * getInstance(QString * className);
+    StorableInterface & getInstance(QString * className);
 
 public:
     // Constructor

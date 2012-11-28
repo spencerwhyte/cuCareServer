@@ -30,20 +30,29 @@ symbian:TARGET.CAPABILITY += NetworkServices
 # CONFIG += qt-components
 
 # The .cpp file which was generated for your project. Feel free to hack it.
+
 SOURCES += main.cpp \
     CUCareDatabase.cpp \
-    User.cpp \
-    PatientRecord.cpp \
-    ConsultationRecord.cpp \
     CUCareServer.cpp \
-    QueryFilter.cpp \
-    Request.cpp \
-    PatientRecordRequest.cpp \
     CUCareServerThread.cpp \
     HTTPRequest.cpp \
     XMLRequest.cpp \
-    LoginRequest.cpp \
-    HTTPResponse.cpp
+    HTTPResponse.cpp \
+    User.cpp \
+    PatientRecord.cpp \
+    ConsultationRecord.cpp \
+    StorableFactory.cpp \
+    ServerObjectRequest.cpp \
+    ServerXMLRequest.cpp \
+    ServerHTTPRequest.cpp \
+    ServerTCPRequest.cpp \
+    ServerObjectResponse.cpp \
+    ServerXMLResponse.cpp \
+    ServerHTTPResponse.cpp \
+    ServerTCPResponse.cpp \
+    ServerScheduledJobManager.cpp \
+    FollowUpRecord.cpp \
+    Record.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -51,19 +60,29 @@ qtcAddDeployment()
 
 HEADERS += \
     CUCareDatabase.h \
+    CUCareServer.h \
+    CUCareServerThread.h \
     User.h \
     PatientRecord.h \
     ConsultationRecord.h \
-    CUCareServer.h \
-    QueryFilter.h \
-    Request.h \
-    PatientRecordRequest.h \
-    CUCareServerThread.h \
-    HTTPRequest.h \
-    XMLRequest.h \
-    LoginRequest.h \
-    HTTPResponse.h
+    StorableInterface.h \
+    StorableFactory.h \
+    ServerObjectRequest.h \
+    ServerXMLRequest.h \
+    ServerHTTPRequest.h \
+    ServerTCPRequest.h \
+    ServerObjectResponse.h \
+    ServerXMLResponse.h \
+    ServerHTTPResponse.h \
+    ServerTCPResponse.h \
+    ServerScheduledJobManager.h \
+    ServerScheduledJobInterface.h \
+    FollowUpRecord.h \
+    Record.h
 
 QT += sql
 QT += network
 QT += xml
+
+RESOURCES += \
+    resources.qrc

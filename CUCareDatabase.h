@@ -1,3 +1,8 @@
+/*
+  By: Spencer Whyte
+  # 100817664
+  Carleton University
+  */
 #ifndef CUCAREDATABASE_H
 #define CUCAREDATABASE_H
 
@@ -6,70 +11,71 @@
 #include <QStringList>
 #include <QString>
 #include <QtCore/QCoreApplication>
-
 #include <QtSql>
 #include <QtSql/QSqlQuery>
 #include "PatientRecord.h"
 #include "User.h"
 #include "ConsultationRecord.h"
+#include <QList>
+#include <QMap>
+#include "StorableInterface.h"
+#include <QVariant>
 
 
+/*
+  The purpose of CUCareDatabase class is to manage
+  storage, modification and querying of any storable
+  objects.This database is backed by SQLite database.
 
+  */
 class CUCareDatabase : public QObject
 {
     Q_OBJECT
 public:
-    QSqlDatabase db;
+    // The database that will be used to store all of
+    // it's objects
+    QSqlDatabase  db;
+    /*
+        Adds an object to the database
 
-    void createDatabase();
+                object - The object to be added
+      */
+    int addObject(StorableInterface * object);
+    /*
+        Updates the information pertaining to a particular object in the database
 
-    explicit CUCareDatabase(QObject *parent = 0);
+                object - The object whose information is to be updated
+      */
+    int editObject(StorableInterface * object);
+    /*// Adds the object to the database
+        Removes the given object from the database
 
+                object - The object to be removed
+      */
+    int removeObject(StorableInterface * object);
+    /*
+        Query's for all objects similar to the specified object
+
+                object - The object to be queried for
+
+                queryResults - Output parameter for the results
+                of the query being requested
+      */
+    int queryForObjects(StorableInterface * object,  QList< QMap < QString, QVariant> > * queryResults);
+
+    // Destructor
+    ~CUCareDatabase();
+    // Constructs the CUCareDatabase, giving it the name of the repository
+    CUCareDatabase(QString * name, QObject *parent);
+private:
+    // Adds a new table to the database to store objects of the firstObejct type.
+    bool initializeTableWithSchemaOfObject(StorableInterface * firstObject);
+    // Checks to see if a database table for a given object is initialized yet
+    bool isDatabaseTableInitialized(QString * className);
+    // Creates the database with the specified name
+    bool createDatabase(QString * databaseName);
+    // Executes the given query on the database
     QSqlQuery executeQuery(const QString& sql);
-
-    /**********************
-      Database Initialization
-      *****************/
-    bool isDatabaseInitialized();
-
-    bool initializePatientTable();
-
-    bool initializeConsultationTable();
-
-    bool initializeUserTable();
-
-    bool initializeDatabase();
-
-    /**************
-      PatientRecord
-      **************/
-    bool addPatientRecord(const PatientRecord& p);
-
-    bool updatePatientRecord(const PatientRecord& p);
-    /***************
-      User
-      **************/
-    bool addUser(const User& u);
-
-    bool removeUser(const User& u);
-
-    bool authenticateUser(User& u);
-
-    /**************
-    Consultation Record
-      ****************/
-    bool addConsultationRecord(const ConsultationRecord &c);
-
-    bool updateConsultationRecord(const ConsultationRecord &c);
-
-    /********************
-       Database Queries
-     ********************/
-protected:
-
-signals:
-    
-public slots:
 
 };
 

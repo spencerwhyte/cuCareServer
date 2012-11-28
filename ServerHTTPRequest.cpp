@@ -24,7 +24,6 @@ ServerHTTPRequest::ServerHTTPRequest(int TCPSocket) : ServerTCPRequest(TCPSocket
    */
  int ServerHTTPRequest::fillHTTPRequest(QString& httpBody, QString& url){
 
-
      int result = fillTCPRequest();
      QString * data = getTCPData();
 
@@ -80,11 +79,21 @@ ServerHTTPRequest::ServerHTTPRequest(int TCPSocket) : ServerTCPRequest(TCPSocket
          return 1;
      }
 
-
      QStringList contentLengthPossibilities;
 
      int contentLength = contentLengthPossibilities.at(0).toInt();
 
+     if(contentLength + header.length() + 2 = data.length()){ // We need to have all of the body data before proceeding
+         return 1;
+     }
+
+     QString bodyData = data.right();
+
+     body = bodyData;
+
+     url = httpUrl;
+
+     return 0;
 
  }
 

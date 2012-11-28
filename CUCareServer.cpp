@@ -1,11 +1,16 @@
+/*
+  By: Spencer Whyte
+  # 100817664
+  Carleton University
+  */
 #include "CUCareServer.h"
 
 
 CUCareServer::CUCareServer(QObject *parent){
     qDebug() << "Starting Server...";
-    centralDatabase = new CUCareDatabase(this);
+    centralDatabase = new CUCareDatabase(new QString("cuCare"), this);
 
-    if (!this->listen(QHostAddress::LocalHost,50000)) {
+    if (!this->listen(QHostAddress::LocalHost,60007)) {
         qDebug() << "SERVER FAILED TO START";
         close();
         return;
@@ -14,7 +19,6 @@ CUCareServer::CUCareServer(QObject *parent){
     qDebug() << this->serverPort();
     qDebug() << this->serverAddress();
 
-    //connect(this, SIGNAL(incommingConnection()), this, SLOT(incomingConnections()));
     qDebug() << "Server Started";
 }
 

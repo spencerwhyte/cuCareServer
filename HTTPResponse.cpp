@@ -1,4 +1,10 @@
-#include "HTTPResponse.h"
+/*
+  By: Spencer Whyte
+  # 100817664
+  Carleton University
+  */
+
+/*
 
 
 HTTPResponse::HTTPResponse(QString * b) : body(NULL)
@@ -34,3 +40,5 @@ QByteArray * HTTPResponse::getResponseData(){
     qDebug() << "BODY: " << *header ;
     return header;
 }
+
+*/

@@ -1,7 +1,16 @@
+/*
+
+  By: Spencer Whyte
+  # 100817664
+  Carleton University
+  */
+
+/*
 #include "XMLRequest.h"
 
 XMLRequest::XMLRequest(QString &d):document(NULL), database(NULL)
 {
+    qDebug() << "DATA RECEIVED: "<< d;
     QDomDocument * doc = new QDomDocument("Login Request");
     doc->setContent(d);
     setDocument(doc);
@@ -38,4 +47,4 @@ XMLRequest::~XMLRequest(){
     delete document;
 }
 
-
+*/

@@ -10,7 +10,8 @@
 #include "ServerHTTPResponse.h"
 #include <QMap>
 #include <QString>
-
+#include <QVariant>
+#include <QXmlStreamWriter>
 
 /*
   The purpose of the ServerXMLResponse is to transribe
@@ -31,7 +32,7 @@ public:
        the response and turns it into XML data to be sent back
        to the client
       */
-    int fillXMLResponse(QMap<QString, QString> & data, QString & name);
+    int fillXMLResponse(QList< QMap<QString, QVariant> > & data, QString & name);
     // Destructor
     ~ServerXMLResponse();
 

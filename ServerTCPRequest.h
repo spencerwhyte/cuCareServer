@@ -7,6 +7,7 @@
 #ifndef SERVERTCPREQUEST_H
 #define SERVERTCPREQUEST_H
 #include <QString>
+#include <QTcpSocket>
 
 /*
   The purpose of the ServerTCPRequest is to transcribe

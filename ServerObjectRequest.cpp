@@ -28,9 +28,10 @@ int ServerObjectRequest::fillObjectRequest(StorableInterface& requestObject, Obj
 
     if(result == 0){ // Success
         // Create the appropriate object from the XML data
-        StorableInterface * ro = StorableFactory.getFactory().getInstance(&name);
+        StorableInterface &ro = StorableFactory.getFactory().getInstance(&name);
+        ro.setAttributesAndValues(mapping);
         // Assign to output parameters
-        requestObject = *ro;
+        requestObject = ro;
         requestType = objectRequestTypeForXMLRequestType(xmlRequestType);
     }else{
         return result;
