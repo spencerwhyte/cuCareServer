@@ -8,6 +8,7 @@
 #define SERVERTCPRESPONSE_H
 
 #include <QString>
+#include <QTcpSocket>
 
 /*
   The purpose of this class is to handle sending
@@ -15,6 +16,8 @@
   */
 class ServerTCPResponse
 {
+private:
+    int socket;
 public:
     /*
       Creates a TCPResponse object with the TCP socket
@@ -28,7 +31,7 @@ public:
             data - Input parameter of the data to be sent
             over TCP to the client
       */
-    int fillTCPResponse(QString * data);
+    int fillTCPResponse(QString & data);
     // Destructor
     ~ServerTCPResponse();
 };
