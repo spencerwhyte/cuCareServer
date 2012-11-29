@@ -35,15 +35,15 @@ private:
 public:
     // Setters
     void setStatus(FollowUpRecordStatus  status);
-    void setDueDateTime(QDateTime * dueDateTime);
-    void setDetails(QString * details);
-    void setStatusForString(QString * status);
+    void setDueDateTime(QDateTime  dueDateTime);
+    void setDetails(QString  details);
+    void setStatusForString(QString  status);
     // Getters
 
     FollowUpRecordStatus getStatus() const;
-    QDateTime * getDueDateTime() const;
-    QString * getDetails() const;
-    QString & getStatusString() const;
+    QDateTime  getDueDateTime() const;
+    QString  getDetails() const;
+    QString  getStatusString() const;
 
     // Storable Interface Methods
     virtual void getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const;

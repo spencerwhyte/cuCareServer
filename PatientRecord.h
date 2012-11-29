@@ -27,16 +27,16 @@ private:
 public:
 
     // Getters
-    QString * getName() const;
-    QString * getPhoneNumber() const;
-    QString * getOHIPNumber() const;
-    QString * getPrimaryPhysician() const;
+    QString getName() const;
+    QString getPhoneNumber() const;
+    QString getOHIPNumber() const;
+    QString getPrimaryPhysician() const;
 
     // Setters
-    void setName(QString * newName);
-    void setPhoneNumber(QString * newPhoneNumber);
-    void setOHIPNumber(QString * newOhipNumber);
-    void setPrimaryPhysician(QString * newPrimaryPhysician) ;
+    void setName(QString newName);
+    void setPhoneNumber(QString newPhoneNumber);
+    void setOHIPNumber(QString newOhipNumber);
+    void setPrimaryPhysician(QString newPrimaryPhysician) ;
 
     // Storable Interface Methods
     virtual void getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const;

@@ -31,17 +31,17 @@ private:
 
 public:
    // Getters
-   QDateTime * getDateAndTime() const;
-   QString * getReason() const;
-   QString * getOHIPNumber() const;
-   QString * getDiagnosis() const;
+   QDateTime  getDateAndTime() const;
+   QString  getReason() const;
+   QString  getOHIPNumber() const;
+   QString  getDiagnosis() const;
 
 
    // Setters
-   void setDateAndTime(QDateTime * newDateAndTime);
-   void setReason(QString* newReason);
-   void setOHIPNumber(QString* newOHIPNumber);
-   void setDiagnosis(QString* diagnosis);
+   void setDateAndTime(QDateTime  newDateAndTime);
+   void setReason(QString newReason);
+   void setOHIPNumber(QString newOHIPNumber);
+   void setDiagnosis(QString newdiagnosis);
 
    // Storable Interface Methods
    virtual void getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const;

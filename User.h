@@ -27,17 +27,17 @@ public:
     }UserType;
 
    // Getters
-   QString * getUsername() const;
+   QString getUsername() const;
    UserType getUserType() const;
 
    // Utility getter
    QString stringForUserType() const;
 
    // Setters
-   void setUsername(QString *username);
+   void setUsername(QString username);
    void setUserType(UserType type);
    // Utility setter
-   void setUserTypeForString(QString * userType);
+   void setUserTypeForString(QString userType);
 
    //Constructor
    User();

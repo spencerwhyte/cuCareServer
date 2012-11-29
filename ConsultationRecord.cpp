@@ -5,40 +5,40 @@
   */
 #include "ConsultationRecord.h"
 
-QDateTime * ConsultationRecord::getDateAndTime() const{
-    return dateAndTime;
+QDateTime ConsultationRecord::getDateAndTime() const{
+    return *dateAndTime;
 }
 
-QString * ConsultationRecord::getReason() const {
-    return reason;
+QString ConsultationRecord::getReason() const {
+    return *reason;
 }
 
-QString * ConsultationRecord::getOHIPNumber() const{
-    return OHIPNumber;
+QString ConsultationRecord::getOHIPNumber() const{
+    return *OHIPNumber;
 }
 
-QString * ConsultationRecord::getDiagnosis() const{
-    return diagnosis;
+QString ConsultationRecord::getDiagnosis() const{
+    return *diagnosis;
 }
 
-void  ConsultationRecord::setDateAndTime(QDateTime * newDateAndTime){
-    delete getDateAndTime();
-    dateAndTime = newDateAndTime;
+void  ConsultationRecord::setDateAndTime(QDateTime newDateAndTime){
+    delete dateAndTime;
+    dateAndTime = new QDateTime(newDateAndTime);
 }
 
-void  ConsultationRecord::setReason(QString* newReason){
-    delete getReason();
-    reason = newReason;
+void  ConsultationRecord::setReason(QString newReason){
+    delete reason;
+    reason = new QString(newReason);
 }
 
-void  ConsultationRecord::setOHIPNumber(QString* newOHIPNumber){
-    delete getOHIPNumber();
-    OHIPNumber = newOHIPNumber;
+void  ConsultationRecord::setOHIPNumber(QString newOHIPNumber){
+    delete OHIPNumber;
+    OHIPNumber = new QString(newOHIPNumber);
 }
 
-void  ConsultationRecord::setDiagnosis(QString* newDiagnosis){
-    delete getDiagnosis();
-    diagnosis = newDiagnosis;
+void  ConsultationRecord::setDiagnosis(QString newDiagnosis){
+    delete diagnosis;
+    diagnosis = new QString(newDiagnosis);
 }
 
 
@@ -49,18 +49,18 @@ ConsultationRecord::ConsultationRecord(): dateAndTime(new QDateTime), reason(new
 // Storable Interface Methods
 void ConsultationRecord::getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const{
     Record::getAttributesAndValues(attributesAndValues);
-    attributesAndValues.insert(QString("Reason"), QVariant(QString(*getReason())));
-    attributesAndValues.insert(QString("DateAndTime"), QVariant(QDateTime(*getDateAndTime())));
-    attributesAndValues.insert(QString("OHIPNumber"), QVariant(QString(*getOHIPNumber())));
-    attributesAndValues.insert(QString("Diagnosis"), QVariant(QString(*getDiagnosis())));
+    attributesAndValues.insert(QString("Reason"), QVariant(QString(getReason())));
+    attributesAndValues.insert(QString("DateAndTime"), QVariant(QDateTime(getDateAndTime())));
+    attributesAndValues.insert(QString("OHIPNumber"), QVariant(QString(getOHIPNumber())));
+    attributesAndValues.insert(QString("Diagnosis"), QVariant(QString(getDiagnosis())));
 }
 
 void ConsultationRecord::setAttributesAndValues(QMap<QString, QVariant> & attributesAndValues){
     Record::setAttributesAndValues(attributesAndValues);
-    QString * r = new QString( attributesAndValues.value(QString("Reason")).toString());
-    QDateTime * dat = new QDateTime(attributesAndValues.value(QString("DateAndTime")).toDateTime());
-    QString * o = new QString( attributesAndValues.value(QString("OHIPNumber")).toString());
-    QString * d = new QString( attributesAndValues.value(QString("Diagnosis")).toString());
+    QString  r =attributesAndValues.value(QString("Reason")).toString();
+    QDateTime  dat =attributesAndValues.value(QString("DateAndTime")).toDateTime();
+    QString  o = attributesAndValues.value(QString("OHIPNumber")).toString();
+    QString  d = attributesAndValues.value(QString("Diagnosis")).toString();
 
     setReason(r);
     setDateAndTime(dat);
