@@ -26,7 +26,7 @@ public:
       Constructs a new ServerXMlResponse with the TCP
       socket over which the data will be sent over
       */
-    ServerXMLResponse(int TCPSocket);
+    ServerXMLResponse(QTcpSocket * TCPSocket);
     /*
        Takes the mapping of attributes to values and the name of
        the response and turns it into XML data to be sent back

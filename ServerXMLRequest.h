@@ -36,7 +36,7 @@ public:
             TCPSocket - The TCP socket over which the
             request will come
       */
-    ServerXMLRequest(int TCPSocket);
+    ServerXMLRequest(QTcpSocket * TCPSocket);
     /*
       Fills an XML request by transcribing the XML
       request data into an key/value mapping and

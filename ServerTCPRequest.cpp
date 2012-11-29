@@ -16,16 +16,9 @@ QString * ServerTCPRequest::getTCPData(){
  */
 int ServerTCPRequest::fillTCPRequest(){
 
-    QTcpSocket tcpSocket;
+    if(TCPSocket->waitForReadyRead(50)){
 
-    if (!tcpSocket.setSocketDescriptor(TCPSocket)) {
-
-        return 1;
-    }
-
-    if(tcpSocket.waitForReadyRead(50)){
-
-        QByteArray readData = tcpSocket.readAll();
+        QByteArray readData = TCPSocket->readAll();
         allData->append(readData);
 
     }
@@ -33,7 +26,7 @@ int ServerTCPRequest::fillTCPRequest(){
 
 }
 
-ServerTCPRequest::ServerTCPRequest(int s) : TCPSocket(s) , allData(new QString()){
+ServerTCPRequest::ServerTCPRequest(QTcpSocket * s) : TCPSocket(s) , allData(new QString()){
 
 }
 

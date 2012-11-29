@@ -29,7 +29,7 @@ public:
       Creates a new TCPResponse object with the TCP Socket
       over which the data of the response will be sent
       */
-    ServerObjectResponse(int TCPSocket, CUCareDatabase * db);
+    ServerObjectResponse(QTcpSocket * TCPSocket, CUCareDatabase * db);
     /*
       Performs whatever has been requested in the request
       and returns the result of the request to the client

@@ -29,7 +29,7 @@ public:
     } ObjectRequestType;
     // Constructs an request with the TCP Socket
     // that the request will come over
-    ServerObjectRequest(int TCPSocket);
+    ServerObjectRequest(QTcpSocket * TCPSocket);
     /*
         Fills the request by transcribing the
         request into the appropriate object

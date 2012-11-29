@@ -4,7 +4,7 @@
   Creates a TCPResponse object with the TCP socket
   over which the response will be sent
   */
-ServerTCPResponse::ServerTCPResponse(int TCPSocket) : socket(TCPSocket){
+ServerTCPResponse::ServerTCPResponse(QTcpSocket * TCPSocket) : socket(TCPSocket){
 
 }
 
@@ -16,16 +16,11 @@ ServerTCPResponse::ServerTCPResponse(int TCPSocket) : socket(TCPSocket){
         over TCP to the client
   */
 int ServerTCPResponse::fillTCPResponse(QString & data){
-
-    QTcpSocket tcpSocket;
-    if (!tcpSocket.setSocketDescriptor(socket)) {
-        return 1;
-    }
     QByteArray byteArrayOfData;
     byteArrayOfData.append(data);
-    tcpSocket.write(byteArrayOfData);
-    tcpSocket.waitForBytesWritten(5000);
-    tcpSocket.disconnect();
+    socket->write(byteArrayOfData);
+    socket->waitForBytesWritten(5000);
+    socket->disconnect();
     return 0;
 }
 

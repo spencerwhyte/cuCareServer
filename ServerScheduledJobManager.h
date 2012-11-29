@@ -4,7 +4,7 @@
 class ServerScheduledJobManager
 {
 public:
-    ServerScheduledJobManager& getManager(){
+    static ServerScheduledJobManager& GetManager(){
         static ServerScheduledJobManager currentManger;
         return currentManger;
     }

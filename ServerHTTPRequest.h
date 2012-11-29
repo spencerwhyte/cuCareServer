@@ -27,7 +27,7 @@ public:
         TCPSocket - The socket over which information
         will be transferred
      */
-    ServerHTTPRequest(int TCPSocket);
+    ServerHTTPRequest(QTcpSocket * TCPSocket);
     /*
      Fills the ServerHTTPRequest by extracting the body
      and the url from the HTTP request.

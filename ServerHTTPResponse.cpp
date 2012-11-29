@@ -4,7 +4,7 @@
   Constructs a ServerHTTPResponse with the TCP
   socket over which the response will be sent
 */
-ServerHTTPResponse::ServerHTTPResponse(int TCPSocket) : ServerTCPResponse(TCPSocket){
+ServerHTTPResponse::ServerHTTPResponse(QTcpSocket * TCPSocket) : ServerTCPResponse(TCPSocket){
 
 }
 

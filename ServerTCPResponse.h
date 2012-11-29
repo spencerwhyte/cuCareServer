@@ -17,13 +17,13 @@
 class ServerTCPResponse
 {
 private:
-    int socket;
+    QTcpSocket * socket;
 public:
     /*
       Creates a TCPResponse object with the TCP socket
       over which the response will be sent
       */
-    ServerTCPResponse(int TCPSocket);
+    ServerTCPResponse(QTcpSocket * TCPSocket);
     /*
       Fills the TCP response by sending the data back to
       the client over TCP

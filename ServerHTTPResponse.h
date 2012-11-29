@@ -24,7 +24,7 @@ public:
       Constructs a ServerHTTPResponse with the TCP
       socket over which the response will be sent
     */
-    ServerHTTPResponse(int TCPSocket);
+    ServerHTTPResponse(QTcpSocket * TCPSocket);
     /*
       Takes the body and sends it back to the client
       as an HTTP response over TCP

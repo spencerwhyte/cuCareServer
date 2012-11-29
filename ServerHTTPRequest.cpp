@@ -7,7 +7,7 @@
      TCPSocket - The socket over which information
      will be transferred
   */
-ServerHTTPRequest::ServerHTTPRequest(int TCPSocket) : ServerTCPRequest(TCPSocket){
+ServerHTTPRequest::ServerHTTPRequest(QTcpSocket * TCPSocket) : ServerTCPRequest(TCPSocket){
 
  }
 

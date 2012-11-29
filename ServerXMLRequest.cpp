@@ -6,7 +6,7 @@
         TCPSocket - The TCP socket over which the
         request will come
   */
-ServerXMLRequest::ServerXMLRequest(int TCPSocket) : ServerHTTPRequest(TCPSocket){
+ServerXMLRequest::ServerXMLRequest(QTcpSocket * TCPSocket) : ServerHTTPRequest(TCPSocket){
 
 }
 

@@ -2,7 +2,7 @@
 
 // Constructs an request with the TCP Socket
 // that the request will come over
-ServerObjectRequest::ServerObjectRequest(int TCPSocket) : ServerXMLRequest(TCPSocket){
+ServerObjectRequest::ServerObjectRequest(QTcpSocket * TCPSocket) : ServerXMLRequest(TCPSocket){
 
 }
 

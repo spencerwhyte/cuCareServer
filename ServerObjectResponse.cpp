@@ -4,7 +4,7 @@
   Creates a new TCPResponse object with the TCP Socket
   over which the data of the response will be sent
   */
-ServerObjectResponse::ServerObjectResponse(int TCPSocket, CUCareDatabase * db) : ServerXMLResponse(TCPSocket) , database(db){
+ServerObjectResponse::ServerObjectResponse(QTcpSocket * TCPSocket, CUCareDatabase * db) : ServerXMLResponse(TCPSocket) , database(db){
 
 }
 

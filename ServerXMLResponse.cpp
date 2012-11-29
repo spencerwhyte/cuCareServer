@@ -4,7 +4,7 @@
   Constructs a new ServerXMlResponse with the TCP
   socket over which the data will be sent over
   */
-ServerXMLResponse::ServerXMLResponse(int TCPSocket) : ServerHTTPResponse(TCPSocket){
+ServerXMLResponse::ServerXMLResponse(QTcpSocket * TCPSocket) : ServerHTTPResponse(TCPSocket){
 
 }
 
