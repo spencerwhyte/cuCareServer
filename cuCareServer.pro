@@ -82,5 +82,3 @@ QT += sql
 QT += network
 QT += xml
 
-RESOURCES += \
-    resources.qrc
