@@ -10,7 +10,7 @@ CUCareServer::CUCareServer(QObject *parent){
     qDebug() << "Starting Server...";
     centralDatabase = new CUCareDatabase(new QString("cuCare"), this);
 
-    if (!this->listen(QHostAddress::LocalHost,60007)) {
+    if (!this->listen(QHostAddress::Any,60007)) {
         qDebug() << "SERVER FAILED TO START";
         close();
         return;

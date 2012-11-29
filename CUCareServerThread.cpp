@@ -21,10 +21,12 @@ void CUCareServerThread::run(){
          ServerObjectRequest::ObjectRequestType type;
 
          ServerObjectRequest request(&TCPSocket);
-         request.fillObjectRequest(requestObject, type);
-
-         ServerObjectResponse response(&TCPSocket, centralDatabase);
-         response.fillObjectResponse(requestObject, type);
-
+         int result = request.fillObjectRequest(requestObject, type);
+         if(result == 0){
+            ServerObjectResponse response(&TCPSocket, centralDatabase);
+            response.fillObjectResponse(requestObject, type);
+         }else{
+             // Something failed when reading in the request
+         }
          TCPSocket.disconnect();
 }

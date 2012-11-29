@@ -1,5 +1,7 @@
 #include "ServerHTTPRequest.h"
 
+
+#define DEBUG_FLAG false
 /*
   Creates a new ServerHTTPRequest that will handle
   data coming over the TCP socket
@@ -24,17 +26,19 @@ ServerHTTPRequest::ServerHTTPRequest(QTcpSocket * TCPSocket) : ServerTCPRequest(
    */
  int ServerHTTPRequest::fillHTTPRequest(QString& httpBody, QString& url){
 
-     int result = fillTCPRequest();
-     QString * data = getTCPData();
+     int result = 0;
+     QString * data = NULL;
 
-     while(constructHTTPRequestFromData(httpBody, url, data) != 0){
-         if(result!=0){
-             return result;
-         }
+     do{
          result = fillTCPRequest();
          data = getTCPData();
-     }
-
+         if(result!=0){
+             qDebug() << "CONNECTION WITH CLIENT LOST";
+             return result;
+         }
+         qDebug() << "TRYING TO CONSTRUCT HTTP REQUEST";
+     }while(constructHTTPRequestFromData(httpBody, url, data) != 0);
+      qDebug() << "HTTP REQUEST CONSTRUCTED";
      return 0;
 
  }
@@ -73,15 +77,17 @@ ServerHTTPRequest::ServerHTTPRequest(QTcpSocket * TCPSocket) : ServerTCPRequest(
 
      QString contentLengthLine = headerFields.at(1);
 
-     QStringList contentLengthPossibilities = contentLengthLine.split(QString("Content-Length: "));
 
-     if(contentLengthPossibilities.length() < 1){ // We need to have a content length before proceeding
-         return 1;
+
+     contentLengthLine.replace(QString("Content-Length: "), "");
+
+     int contentLength = contentLengthLine.toInt();
+     if(DEBUG_FLAG){
+        qDebug() << contentLength;
+        qDebug() << header.length();
+        qDebug() <<data.length();
      }
-
-     int contentLength = contentLengthPossibilities.at(0).toInt();
-
-     if(contentLength + header.length() + 2 == data.length()){ // We need to have all of the body data before proceeding
+     if(contentLength + header.length() + 2 != data.length()){ // We need to have all of the body data before proceeding
          return 1;
      }
 
@@ -90,6 +96,12 @@ ServerHTTPRequest::ServerHTTPRequest(QTcpSocket * TCPSocket) : ServerTCPRequest(
      body = bodyData;
 
      url = httpUrl;
+
+     if(DEBUG_FLAG){
+        qDebug() << "DATA: " << data;
+        qDebug() << "BODY: " << body << "";
+        qDebug() << "URL: " << url << "";
+     }
 
      return 0;
 

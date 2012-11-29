@@ -29,16 +29,19 @@ int ServerXMLRequest::fillXMLRequest(QMap<QString, QVariant> &xmlMapping, QStrin
     QString body;
     QString url;
 
+
+    int result = this->fillHTTPRequest(body, url);
+
+
     requestTypeForUrl(type, url);
 
     classNameForUrl(name,url);
 
-    int result = this->fillHTTPRequest(body, url);
-
     if(result == 0){
 
         xmlMappingForDataAndRootNode(xmlMapping, body, name);
-
+        qDebug() << "CONSTRUCTED XML REQUEST";
+        qDebug() << xmlMapping;
     }else{
         return result;
     }
@@ -57,7 +60,7 @@ int ServerXMLRequest::fillXMLRequest(QMap<QString, QVariant> &xmlMapping, QStrin
   */
 int ServerXMLRequest::requestTypeForUrl(XMLRequestType &type, const QString & url){
     QStringList components = url.split(QString("/"));
-    QString typeString = components.at(0);
+    QString typeString = components.at(1);
     if(typeString.compare(typeString, QString("Add"), Qt::CaseInsensitive) == 0){
         type = Add;
         return 0;
@@ -86,7 +89,7 @@ int ServerXMLRequest::requestTypeForUrl(XMLRequestType &type, const QString & ur
   */
 int ServerXMLRequest::classNameForUrl(QString &name, const QString & url){
     QStringList components = url.split(QString("/"));
-    name = components.at(1);
+    name = components.at(2);
     if(name.length() > 0){
         return 0;
     }
@@ -120,7 +123,7 @@ int ServerXMLRequest::xmlMappingForDataAndRootNode(QMap<QString, QVariant> &xmlM
 
     for(int i = 0; i< keyValues.length(); i++){
         QDomNode node = keyValues.at(i);
-        xmlMapping.insert(node.nodeName(), QVariant(node.nodeValue()));
+        xmlMapping.insert(node.nodeName(), QVariant(node.firstChild().nodeValue()));
     }
 
     return 0;

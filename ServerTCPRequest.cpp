@@ -22,8 +22,10 @@ int ServerTCPRequest::fillTCPRequest(){
         allData->append(readData);
 
     }
-    return 0;
-
+    if(TCPSocket->state() == QAbstractSocket::ConnectedState){
+          return 0;
+    }
+    return 1;
 }
 
 ServerTCPRequest::ServerTCPRequest(QTcpSocket * s) : TCPSocket(s) , allData(new QString()){
