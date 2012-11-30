@@ -19,7 +19,7 @@ ServerObjectRequest::ServerObjectRequest(QTcpSocket * TCPSocket) : ServerXMLRequ
         returns - 0 for success
                   Any other number is the error code
   */
-int ServerObjectRequest::fillObjectRequest(StorableInterface& requestObject, ObjectRequestType & requestType){
+int ServerObjectRequest::fillObjectRequest(StorableInterface ** requestObject, ObjectRequestType & requestType){
     QString name;
     QMap<QString, QVariant> mapping;
     XMLRequestType xmlRequestType;
@@ -31,7 +31,10 @@ int ServerObjectRequest::fillObjectRequest(StorableInterface& requestObject, Obj
         StorableInterface * ro = StorableFactory::GetFactory().getInstance(&name);
         ro->setAttributesAndValues(mapping);
         // Assign to output parameters
-        requestObject = *ro;
+
+        *requestObject = ro;
+
+
         requestType = objectRequestTypeForXMLRequestType(xmlRequestType);
     }else{
         return result;

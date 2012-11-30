@@ -12,6 +12,14 @@
             object - The object to be added
   */
 int CUCareDatabase::addObject(StorableInterface & object){
+                   qDebug() <<":(";
+    if(!isDatabaseTableInitialized(object.className())){
+        qDebug() << "Decided it needed to be initialized";
+
+        initializeTableWithSchemaOfObject(object);
+    }
+
+
     QMap<QString, QVariant> attributesAndValues;
     object.getAttributesAndValues(attributesAndValues);
     attributesAndValues.remove(object.getIdentifierKey());
@@ -164,20 +172,25 @@ CUCareDatabase::~CUCareDatabase(){
 
 }
 
-bool CUCareDatabase::isDatabaseTableInitialized(QString * className){
+bool CUCareDatabase::isDatabaseTableInitialized(QString className){
     QStringList l = db.tables();
-    if(l.contains(*className)){
+    if(l.contains(className)){
         return true;
     }
     return false;
 }
 
-bool CUCareDatabase::initializeTableWithSchemaOfObject(StorableInterface * firstObject){
+bool CUCareDatabase::initializeTableWithSchemaOfObject(StorableInterface & firstObject){
+    qDebug() << "HERE!";
+    qDebug() << firstObject.className();
     QString schema("create table ");
-    schema += firstObject->className();
+    schema += firstObject.className();
     schema += " (id integer primary key";
     QMap<QString, QVariant> attributesAndValues;
-    firstObject->getAttributesAndValues(attributesAndValues);
+    firstObject.getAttributesAndValues(attributesAndValues);
+    attributesAndValues.remove(firstObject.getIdentifierKey());
+
+    qDebug() <<"IDENTIFIER KEY" << firstObject.getIdentifierKey();
     QList<QString> keys = attributesAndValues.keys();
     QList<QVariant> values = attributesAndValues.values();
 
@@ -193,6 +206,11 @@ bool CUCareDatabase::initializeTableWithSchemaOfObject(StorableInterface * first
             schema += " DATETIME";
         }
     }
+
+    schema += ")";
+
+    executeQuery(schema);
+
 }
 
 bool CUCareDatabase::createDatabase(QString * dn){

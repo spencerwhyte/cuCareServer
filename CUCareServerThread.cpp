@@ -16,15 +16,15 @@ void CUCareServerThread::run(){
          QTcpSocket TCPSocket;
          TCPSocket.setSocketDescriptor(socket);
 
-         Record r;
-         StorableInterface &requestObject = r;
+         StorableInterface * requestObject;
          ServerObjectRequest::ObjectRequestType type;
 
          ServerObjectRequest request(&TCPSocket);
-         int result = request.fillObjectRequest(requestObject, type);
+         int result = request.fillObjectRequest(&requestObject, type);
          if(result == 0){
             ServerObjectResponse response(&TCPSocket, centralDatabase);
-            response.fillObjectResponse(requestObject, type);
+            response.fillObjectResponse(*requestObject, type);
+            delete requestObject;
          }else{
              // Something failed when reading in the request
          }

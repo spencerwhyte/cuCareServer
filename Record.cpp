@@ -35,6 +35,6 @@ QString Record::className() const{
 }
 
 QString Record::getIdentifierKey() const{
-    static QString identifier;
+    static QString identifier("id");
     return identifier;
 }

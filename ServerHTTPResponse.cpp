@@ -16,10 +16,10 @@ int ServerHTTPResponse::fillHTTPResponse(QString & body){
     QString responseData;
 
     QString header;
-    header.append("HTTP/1.1 200 OK\n");
+    header.append("HTTP/1.1 200 OK\r\n");
     header.append("Content-Length: ");
-    header.append(new QString(body.length()));
-    header.append("\n");
+    header.append(new QString(QString::number(body.length())));
+    header.append("\r\n");
     header.append("\r\n");
 
     responseData.append(header);

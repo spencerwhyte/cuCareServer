@@ -69,9 +69,9 @@ public:
     CUCareDatabase(QString * name, QObject *parent);
 private:
     // Adds a new table to the database to store objects of the firstObejct type.
-    bool initializeTableWithSchemaOfObject(StorableInterface * firstObject);
+    bool initializeTableWithSchemaOfObject(StorableInterface & firstObject);
     // Checks to see if a database table for a given object is initialized yet
-    bool isDatabaseTableInitialized(QString * className);
+    bool isDatabaseTableInitialized(QString className);
     // Creates the database with the specified name
     bool createDatabase(QString * databaseName);
     // Executes the given query on the database

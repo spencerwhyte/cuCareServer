@@ -43,7 +43,7 @@ public:
             returns - 0 for success
                       Any other number is the error code
       */
-    int fillObjectRequest(StorableInterface& requestObject, ObjectRequestType & requestType);
+    int fillObjectRequest(StorableInterface ** requestObject, ObjectRequestType & requestType);
 
     ObjectRequestType objectRequestTypeForXMLRequestType(ServerXMLRequest::XMLRequestType type);
 

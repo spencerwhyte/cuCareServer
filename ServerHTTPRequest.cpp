@@ -47,7 +47,7 @@ ServerHTTPRequest::ServerHTTPRequest(QTcpSocket * TCPSocket) : ServerTCPRequest(
 
      QString data(*d); // Lets make a local copy instead of using the arrow operator
 
-     QStringList headerBody = data.split(QString("\r\n"));
+     QStringList headerBody = data.split(QString("\r\n\r\n"));
 
      if(headerBody.length() < 2){ // We must at least have a header and a body
          return 1;
@@ -55,7 +55,7 @@ ServerHTTPRequest::ServerHTTPRequest(QTcpSocket * TCPSocket) : ServerTCPRequest(
 
      QString header = headerBody.at(0);
 
-     QStringList headerFields = header.split(QString("\n"));
+     QStringList headerFields = header.split(QString("\r\n"));
 
      if(headerFields.length() < 2){ // We must at least have the protocol, and the content length
          return 1;
@@ -87,7 +87,7 @@ ServerHTTPRequest::ServerHTTPRequest(QTcpSocket * TCPSocket) : ServerTCPRequest(
         qDebug() << header.length();
         qDebug() <<data.length();
      }
-     if(contentLength + header.length() + 2 != data.length()){ // We need to have all of the body data before proceeding
+     if(contentLength + header.length() + 4 != data.length()){ // We need to have all of the body data before proceeding
          return 1;
      }
 
