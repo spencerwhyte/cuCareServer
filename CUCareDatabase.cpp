@@ -77,6 +77,7 @@ int CUCareDatabase::addObject(StorableInterface & object){
             object - The object whose information is to be updated
   */
 int CUCareDatabase::editObject(StorableInterface & object){
+    qDebug() << "EDITING";
     QMap<QString, QVariant> attributesAndValues;
     object.getAttributesAndValues(attributesAndValues);
     QVariant uniqueIdentifier = attributesAndValues.value(object.getIdentifierKey());
@@ -107,6 +108,8 @@ int CUCareDatabase::editObject(StorableInterface & object){
     query.bindValue(values.length(), uniqueIdentifier);
 
     query.exec();
+
+    qDebug() << query.lastError();
 
     return !(query.numRowsAffected() == 0 || query.numRowsAffected() == -1);
 }
@@ -165,14 +168,26 @@ int CUCareDatabase::queryForObjects(StorableInterface & object,  QList< QMap < Q
             }
             first = false;
             queryString += keys.at(i);
-            queryString += " LIKE '%";
-            queryString += values.at(i).toString();
-            queryString += "%'";
+            queryString += " LIKE '%' || ? || '%'";
+        }
+    }
+
+    QSqlQuery queryResult;
+    queryResult.prepare(queryString);
+    for(int i =0 ; i < keys.length() ;i ++){
+        if((values.at(i).type() == QVariant::String) && values.at(i).toString().length() != 0){
+            queryResult.addBindValue(values.at(i).toString());
+
+            qDebug() <<"BINDING VALUE" << values.at(i).toString();
         }
     }
 
 
-    QSqlQuery queryResult = executeQuery(queryString);
+    queryResult.exec();
+    qDebug() << queryResult.lastError();
+    qDebug() << queryResult.lastQuery();
+
+
     while(queryResult.next()){
         QSqlRecord record = queryResult.record();
         QMap<QString, QVariant> current;
@@ -224,7 +239,7 @@ bool CUCareDatabase::initializeTableWithSchemaOfObject(StorableInterface & first
         schema += keys.at(i);
         QVariant::Type type = values.at(i).type();
         if(type == QVariant::String){
-            schema += " varchar (1000) ";
+            schema += " varchar ";
         }else if(type == QVariant::Int){
             schema += " integer";
         }else if(type == QVariant::DateTime){
