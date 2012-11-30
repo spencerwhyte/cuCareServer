@@ -23,6 +23,10 @@ QString  PatientRecord::getPrimaryPhysician() const{
     return *primaryPhysician;
 }
 
+QString PatientRecord::getHasOverDueFollowUps() const{
+    return *hasOverDueFollowUps;
+}
+
 // Setters
 void  PatientRecord::setName(QString  newName){
     delete name;
@@ -44,6 +48,11 @@ void PatientRecord::setPrimaryPhysician(QString  newPrimaryPhysician){
     primaryPhysician = new QString(newPrimaryPhysician);
 }
 
+void PatientRecord::setHasOverDueFollowUps(QString newOver){
+    delete hasOverDueFollowUps;
+    hasOverDueFollowUps = new QString(newOver);
+}
+
 // Storable Interface Methods
 void PatientRecord::getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const{
     Record::getAttributesAndValues(attributesAndValues);
@@ -51,6 +60,7 @@ void PatientRecord::getAttributesAndValues(QMap<QString, QVariant> & attributesA
     attributesAndValues.insert(QString("PhoneNumber"), QVariant(QString(getPhoneNumber())));
     attributesAndValues.insert(QString("OHIPNumber"), QVariant(QString(getOHIPNumber())));
     attributesAndValues.insert(QString("PrimaryPhysician"), QVariant(QString(getPrimaryPhysician())));
+    attributesAndValues.insert(QString("HasOverDueFollowUps"), QVariant(QString(getHasOverDueFollowUps())));
 }
 
 void PatientRecord::setAttributesAndValues(QMap<QString, QVariant> & attributesAndValues){
@@ -59,11 +69,13 @@ void PatientRecord::setAttributesAndValues(QMap<QString, QVariant> & attributesA
     QString  p = attributesAndValues.value(QString("PhoneNumber")).toString();
     QString  o = attributesAndValues.value(QString("OHIPNumber")).toString();
     QString  ps = attributesAndValues.value(QString("PrimaryPhysician")).toString();
+    QString  h = attributesAndValues.value(QString("HasOverDueFollowUps")).toString();
 
     setName(n);
     setPhoneNumber(p);
     setOHIPNumber(o);
     setPrimaryPhysician(ps);
+    setHasOverDueFollowUps(h);
 }
 
 QString PatientRecord::className() const{
@@ -72,7 +84,7 @@ QString PatientRecord::className() const{
 }
 
 // Constructor and destructor
-PatientRecord::PatientRecord(): name(new QString()), phoneNumber(new QString()), OHIPNumber(new QString()), primaryPhysician(new QString()){
+PatientRecord::PatientRecord(): name(new QString()), phoneNumber(new QString()), OHIPNumber(new QString()), primaryPhysician(new QString()),hasOverDueFollowUps(new QString()){
 
 }
 
@@ -81,4 +93,5 @@ PatientRecord::~PatientRecord(){
     delete phoneNumber;
     delete OHIPNumber;
     delete primaryPhysician;
+    delete hasOverDueFollowUps;
 }

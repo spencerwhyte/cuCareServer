@@ -23,7 +23,7 @@ private:
     QString * phoneNumber;
     QString * OHIPNumber;
     QString * primaryPhysician;
-
+    QString * hasOverDueFollowUps;
 public:
 
     // Getters
@@ -31,12 +31,14 @@ public:
     QString getPhoneNumber() const;
     QString getOHIPNumber() const;
     QString getPrimaryPhysician() const;
+    QString getHasOverDueFollowUps()const;
 
     // Setters
     void setName(QString newName);
     void setPhoneNumber(QString newPhoneNumber);
     void setOHIPNumber(QString newOhipNumber);
     void setPrimaryPhysician(QString newPrimaryPhysician) ;
+    void setHasOverDueFollowUps(QString newOver);
 
     // Storable Interface Methods
     virtual void getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const;
