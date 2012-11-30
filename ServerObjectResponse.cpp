@@ -19,16 +19,12 @@ ServerObjectResponse::ServerObjectResponse(QTcpSocket * TCPSocket, CUCareDatabas
 */
 int ServerObjectResponse::fillObjectResponse(StorableInterface& requestObject, ServerObjectRequest::ObjectRequestType type){
 
-
-
    if(type == ServerObjectRequest::Query){
         QList<QMap<QString, QVariant> > responseData;
 
         int result = database->queryForObjects(requestObject, responseData);
         QString className = requestObject.className();
         fillXMLResponse(responseData, className);
-
-
 
         return result;
     }else{
@@ -37,8 +33,9 @@ int ServerObjectResponse::fillObjectResponse(StorableInterface& requestObject, S
        QList<QMap<QString, QVariant> > responseData;
        QMap<QString, QVariant> data;
        requestObject.getAttributesAndValues(data);
+       qDebug() << "RAW DATA: " << data;
        responseData.append(data);
-
+       qDebug() <<"DATA IN LIST: " <<responseData;
        if(type == ServerObjectRequest::Add){
             result = database->addObject(requestObject);
        }else if(type == ServerObjectRequest::Edit){
@@ -46,7 +43,8 @@ int ServerObjectResponse::fillObjectResponse(StorableInterface& requestObject, S
        }else if(type == ServerObjectRequest::Remove){
             result = database->removeObject(requestObject);
        }
-       QString className =  requestObject.className();
+       QString className = requestObject.className();
+       qDebug() <<"DATA IN LIST: " <<responseData;
        fillXMLResponse(responseData, className);
        return result;
     }

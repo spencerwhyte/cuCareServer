@@ -22,6 +22,9 @@ int CUCareDatabase::addObject(StorableInterface & object){
 
     QMap<QString, QVariant> attributesAndValues;
     object.getAttributesAndValues(attributesAndValues);
+
+    qDebug() << attributesAndValues;
+
     attributesAndValues.remove(object.getIdentifierKey());
     QList<QString> keys = attributesAndValues.keys();
     QList<QVariant> values = attributesAndValues.values();
@@ -33,7 +36,7 @@ int CUCareDatabase::addObject(StorableInterface & object){
     for(int i = 0 ; i < keys.length(); i++){
         queryString += keys.at(i);
         if(i != keys.length() -1){
-            queryString += ",";
+            queryString += ", ";
         }
     }
 
@@ -42,18 +45,29 @@ int CUCareDatabase::addObject(StorableInterface & object){
     for(int i = 0 ; i < keys.length(); i++){
         queryString += "?";
         if(i != keys.length() -1){
-            queryString += ",";
+            queryString += ", ";
         }
     }
     queryString += ")";
+    qDebug() << queryString;
 
     QSqlQuery query;
     query.prepare(queryString);
     for(int i = 0 ; i < values.length(); i++){
-         query.bindValue(i, values.at(i));
+        qDebug() << values.at(i);
+        query.addBindValue(values.at(i));
     }
 
+    qDebug() << query.boundValues();
+
     query.exec();
+
+    query.result()->fetchFirst();
+
+    qDebug() << query.numRowsAffected();
+
+
+
 
     return !(query.numRowsAffected() == 0 || query.numRowsAffected() == -1);
 }
@@ -185,7 +199,7 @@ bool CUCareDatabase::initializeTableWithSchemaOfObject(StorableInterface & first
     qDebug() << firstObject.className();
     QString schema("create table ");
     schema += firstObject.className();
-    schema += " (id integer primary key";
+    schema += " (id INTEGER PRIMARY KEY AUTOINCREMENT";
     QMap<QString, QVariant> attributesAndValues;
     firstObject.getAttributesAndValues(attributesAndValues);
     attributesAndValues.remove(firstObject.getIdentifierKey());

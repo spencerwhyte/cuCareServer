@@ -41,7 +41,7 @@ void User::getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues)
 
 void User::setAttributesAndValues(QMap<QString, QVariant> & attributesAndValues){
     Record::setAttributesAndValues(attributesAndValues);
-    QString u = attributesAndValues.value(QString("Username")).toString();
+    QString u = attributesAndValues.value(QString("UserName")).toString();
     QString type = attributesAndValues.value(QString("UserType")).toString();
 
     setUsername(u);

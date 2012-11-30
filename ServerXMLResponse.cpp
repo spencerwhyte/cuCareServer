@@ -20,7 +20,7 @@ int ServerXMLResponse::fillXMLResponse(QList< QMap<QString, QVariant> > & data, 
     writer.writeStartElement("list");
 
     for(int i = 0 ; i < data.length(); i++){
-        QMap<QString, QVariant> currentData;
+        QMap<QString, QVariant> currentData = data.at(i);
         writer.writeStartElement(name);
         QList<QString> keys = currentData.keys();
         QList<QVariant> values = currentData.values();
