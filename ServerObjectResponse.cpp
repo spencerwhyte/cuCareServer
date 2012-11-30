@@ -30,12 +30,7 @@ int ServerObjectResponse::fillObjectResponse(StorableInterface& requestObject, S
     }else{
        int result;
 
-       QList<QMap<QString, QVariant> > responseData;
-       QMap<QString, QVariant> data;
-       requestObject.getAttributesAndValues(data);
-       qDebug() << "RAW DATA: " << data;
-       responseData.append(data);
-       qDebug() <<"DATA IN LIST: " <<responseData;
+
        if(type == ServerObjectRequest::Add){
             result = database->addObject(requestObject);
        }else if(type == ServerObjectRequest::Edit){
@@ -43,6 +38,12 @@ int ServerObjectResponse::fillObjectResponse(StorableInterface& requestObject, S
        }else if(type == ServerObjectRequest::Remove){
             result = database->removeObject(requestObject);
        }
+
+       QList<QMap<QString, QVariant> > responseData;
+       QMap<QString, QVariant> data;
+       requestObject.getAttributesAndValues(data);
+       qDebug() << "RAW DATA: " << data;
+       responseData.append(data);
        QString className = requestObject.className();
        qDebug() <<"DATA IN LIST: " <<responseData;
        fillXMLResponse(responseData, className);

@@ -15,7 +15,6 @@ int CUCareDatabase::addObject(StorableInterface & object){
                    qDebug() <<":(";
     if(!isDatabaseTableInitialized(object.className())){
         qDebug() << "Decided it needed to be initialized";
-
         initializeTableWithSchemaOfObject(object);
     }
 
@@ -62,12 +61,12 @@ int CUCareDatabase::addObject(StorableInterface & object){
 
     query.exec();
 
-    query.result()->fetchFirst();
+    int id = query.lastInsertId().toInt();
+
+    attributesAndValues.insert(object.getIdentifierKey(), QVariant(id));
+    object.setAttributesAndValues(attributesAndValues);
 
     qDebug() << query.numRowsAffected();
-
-
-
 
     return !(query.numRowsAffected() == 0 || query.numRowsAffected() == -1);
 }
@@ -143,6 +142,10 @@ int CUCareDatabase::removeObject(StorableInterface & object){
             of the query being requested
   */
 int CUCareDatabase::queryForObjects(StorableInterface & object,  QList< QMap < QString, QVariant> > & queryResults){
+    if(!isDatabaseTableInitialized(object.className())){
+        qDebug() << "Decided it needed to be initialized";
+        initializeTableWithSchemaOfObject(object);
+    }
     QMap<QString, QVariant> attributesAndValues;
     object.getAttributesAndValues(attributesAndValues);
     attributesAndValues.remove(object.getIdentifierKey());
@@ -150,7 +153,7 @@ int CUCareDatabase::queryForObjects(StorableInterface & object,  QList< QMap < Q
     QList<QVariant> values = attributesAndValues.values();
 
 
-    QString queryString("SELECT FROM ");
+    QString queryString("SELECT * FROM ");
     queryString += object.className();
 
     queryString += " WHERE ";
@@ -161,8 +164,9 @@ int CUCareDatabase::queryForObjects(StorableInterface & object,  QList< QMap < Q
                 queryString += " AND ";
             }
             first = false;
-            queryString += " LIKE '%";
             queryString += keys.at(i);
+            queryString += " LIKE '%";
+            queryString += values.at(i).toString();
             queryString += "%'";
         }
     }
@@ -170,7 +174,14 @@ int CUCareDatabase::queryForObjects(StorableInterface & object,  QList< QMap < Q
 
     QSqlQuery queryResult = executeQuery(queryString);
     while(queryResult.next()){
-        queryResults.append(queryResult.boundValues());
+        QSqlRecord record = queryResult.record();
+        QMap<QString, QVariant> current;
+        for(int i = 0 ; i < record.count(); i++){
+            QString attributeName = record.fieldName(i);
+            QVariant value = record.field(i).value();
+            current.insert(attributeName, value);
+        }
+        queryResults.append(current);
     }
     return true;
 }
