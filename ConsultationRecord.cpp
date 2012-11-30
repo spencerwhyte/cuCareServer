@@ -55,7 +55,7 @@ void ConsultationRecord::getAttributesAndValues(QMap<QString, QVariant> & attrib
     attributesAndValues.insert(QString("Diagnosis"), QVariant(QString(getDiagnosis())));
 }
 
-void ConsultationRecord::setAttributesAndValues(QMap<QString, QVariant> & attributesAndValues){
+void ConsultationRecord::setAttributesAndValues(const QMap<QString, QVariant> & attributesAndValues){
     Record::setAttributesAndValues(attributesAndValues);
     QString  r =attributesAndValues.value(QString("Reason")).toString();
     QDateTime  dat =attributesAndValues.value(QString("DateAndTime")).toDateTime();

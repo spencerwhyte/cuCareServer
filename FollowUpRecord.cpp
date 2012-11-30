@@ -77,7 +77,7 @@ void FollowUpRecord::getAttributesAndValues(QMap<QString, QVariant> & attributes
     attributesAndValues.insert(QString("ConsultationRecordID"), QVariant(getConsultationRecordId()));
 }
 
-void FollowUpRecord::setAttributesAndValues(QMap<QString, QVariant> & attributesAndValues){
+void FollowUpRecord::setAttributesAndValues(const QMap<QString, QVariant> & attributesAndValues){
     Record::setAttributesAndValues(attributesAndValues);
     QString  s = attributesAndValues.value(QString("Status")).toString();
     QDateTime  ddat = attributesAndValues.value(QString("DueDateAndTime")).toDateTime();

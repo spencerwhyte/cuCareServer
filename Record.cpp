@@ -24,7 +24,7 @@ Record::~Record(){
 void Record::getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const{
     attributesAndValues.insert(QString("id"),QVariant(id));
 }
-void Record::setAttributesAndValues(QMap<QString, QVariant> & attributesAndValues){
+void Record::setAttributesAndValues(const QMap<QString, QVariant> & attributesAndValues){
     int tempID  = attributesAndValues.value(QString("id")).toInt();
     setId(tempID);
 }

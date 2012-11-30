@@ -54,7 +54,7 @@ public:
              be made to reflect the given
              attributes and values.
       */
-    virtual void setAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) = 0;
+    virtual void setAttributesAndValues(const QMap<QString, QVariant> & attributesAndValues) = 0;
     /*
         This method allows the implementing object
         to specify what type it is by giving a name
