@@ -34,18 +34,21 @@ private:
     FollowUpRecordStatus status;
     QDateTime * dueDateTime;
     QString * details;
+    int consultationRecordId;
 public:
     // Setters
     void setStatus(FollowUpRecordStatus  status);
     void setDueDateTime(QDateTime  dueDateTime);
     void setDetails(QString  details);
     void setStatusForString(QString  status);
+    void setConsultationRecordId(int newID);
     // Getters
 
     FollowUpRecordStatus getStatus() const;
     QDateTime  getDueDateTime() const;
     QString  getDetails() const;
     QString  getStatusString() const;
+    int getConsultationRecordId() const;
 
     // Storable Interface Methods
     virtual void getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const;

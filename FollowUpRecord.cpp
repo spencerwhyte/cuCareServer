@@ -28,6 +28,10 @@ void FollowUpRecord::setDetails(QString  d){
     details = new QString(d);
 }
 
+void FollowUpRecord::setConsultationRecordId(int newID){
+    consultationRecordId = newID;
+}
+
 // Getters
 
 
@@ -60,12 +64,17 @@ QString FollowUpRecord::getDetails() const{
     return *details;
 }
 
+int FollowUpRecord::getConsultationRecordId()const{
+    return consultationRecordId;
+}
+
 // Storable Interface Methods
 void FollowUpRecord::getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const{
     Record::getAttributesAndValues(attributesAndValues);
     attributesAndValues.insert(QString("Status"), QVariant(getStatusString()));
     attributesAndValues.insert(QString("DueDateAndTime"), QVariant(QDateTime(getDueDateTime())));
     attributesAndValues.insert(QString("Details"), QVariant(QString(getDetails())));
+    attributesAndValues.insert(QString("ConsultationRecordID"), QVariant(getConsultationRecordId()));
 }
 
 void FollowUpRecord::setAttributesAndValues(QMap<QString, QVariant> & attributesAndValues){
@@ -73,10 +82,12 @@ void FollowUpRecord::setAttributesAndValues(QMap<QString, QVariant> & attributes
     QString  s = attributesAndValues.value(QString("Status")).toString();
     QDateTime  ddat = attributesAndValues.value(QString("DueDateAndTime")).toDateTime();
     QString  d = attributesAndValues.value(QString("Details")).toString();
+    int c = attributesAndValues.value(QString("ConsultationRecordID")).toInt();
 
     setStatusForString(s);
     setDueDateTime(ddat);
     setDetails(d);
+    setConsultationRecordId(c);
 }
 
 QString FollowUpRecord:: className() const{
@@ -85,7 +96,7 @@ QString FollowUpRecord:: className() const{
 }
 
 // Constructor / Destructor
-FollowUpRecord::FollowUpRecord() : status(INVALID), dueDateTime(new QDateTime()), details(new QString()){
+FollowUpRecord::FollowUpRecord() : status(INVALID), dueDateTime(new QDateTime()), details(new QString()), consultationRecordId(-1){
 
 }
 
