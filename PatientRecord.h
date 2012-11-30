@@ -39,6 +39,9 @@ public:
     bool getHasPendingFollowUps()const;
     bool getHasCompletedFollowUps()const;
 
+    bool booleanForString(QString string)const;
+    QString stringForBoolean(bool value) const;
+
 
     // Setters
     void setName(QString newName);

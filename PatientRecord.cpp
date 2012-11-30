@@ -69,6 +69,20 @@ void PatientRecord::setHasCompletedFollowUps(bool newValue){
     hasCompletedFollowUps = newValue;
 }
 
+QString PatientRecord::stringForBoolean(bool value) const{
+    if(value){
+        return QString("TRUE");
+    }
+    return QString();
+}
+
+bool PatientRecord::booleanForString(QString string) const{
+    if(string.length() == 0){
+        return false;
+    }
+    return true;
+}
+
 
 // Storable Interface Methods
 void PatientRecord::getAttributesAndValues(QMap<QString, QVariant> & attributesAndValues) const{
@@ -78,9 +92,9 @@ void PatientRecord::getAttributesAndValues(QMap<QString, QVariant> & attributesA
     attributesAndValues.insert(QString("OHIPNumber"), QVariant(QString(getOHIPNumber())));
     attributesAndValues.insert(QString("PrimaryPhysician"), QVariant(QString(getPrimaryPhysician())));
 
-    attributesAndValues.insert(QString("HasOverDueFollowUps"), QVariant(getHasOverDueFollowUps()));
-    attributesAndValues.insert(QString("HasPendingFollowUps"), QVariant(getHasPendingFollowUps()));
-    attributesAndValues.insert(QString("HasCompletedFollowUps"), QVariant(getHasCompletedFollowUps()));
+    attributesAndValues.insert(QString("HasOverDueFollowUps"), QVariant(stringForBoolean(getHasOverDueFollowUps())));
+    attributesAndValues.insert(QString("HasPendingFollowUps"), QVariant(stringForBoolean(getHasPendingFollowUps())));
+    attributesAndValues.insert(QString("HasCompletedFollowUps"), QVariant(stringForBoolean(getHasCompletedFollowUps())));
 }
 
 void PatientRecord::setAttributesAndValues(QMap<QString, QVariant> & attributesAndValues){
@@ -90,9 +104,10 @@ void PatientRecord::setAttributesAndValues(QMap<QString, QVariant> & attributesA
     QString  o = attributesAndValues.value(QString("OHIPNumber")).toString();
     QString  ps = attributesAndValues.value(QString("PrimaryPhysician")).toString();
 
-    bool hf = attributesAndValues.value(QString("HasOverDueFollowUps")).toBool();
-    bool pf = attributesAndValues.value(QString("HasPendingFollowUps")).toBool();
-    bool cf = attributesAndValues.value(QString("HasCompletedFollowUps")).toBool();
+
+    bool hf = booleanForString(attributesAndValues.value(QString("HasOverDueFollowUps")).toString());
+    bool pf = booleanForString(attributesAndValues.value(QString("HasPendingFollowUps")).toString());
+    bool cf = booleanForString(attributesAndValues.value(QString("HasCompletedFollowUps")).toString());
 
 
     setName(n);
