@@ -25,7 +25,8 @@ public:
         Add,
         Edit,
         Remove,
-        Query
+        Query,
+        EqualityQuery
     } ObjectRequestType;
     // Constructs an request with the TCP Socket
     // that the request will come over

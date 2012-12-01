@@ -73,6 +73,9 @@ int ServerXMLRequest::requestTypeForUrl(XMLRequestType &type, const QString & ur
     }else if(typeString.compare(typeString, QString("Remove"), Qt::CaseInsensitive) == 0){
         type = Remove;
         return 0;
+    }else if(typeString.compare(typeString, QString("EqualityQuery"), Qt::CaseInsensitive) == 0){
+        type = EqualityQuery;
+        return 0;
     }
     return 1;
 }

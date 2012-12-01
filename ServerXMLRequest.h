@@ -28,7 +28,8 @@ public:
         Add,
         Edit,
         Remove,
-        Query
+        Query,
+        EqualityQuery
     }XMLRequestType;
     /*
       Constructs a ServerXMLRequest

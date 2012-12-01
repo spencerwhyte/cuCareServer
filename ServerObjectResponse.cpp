@@ -19,15 +19,17 @@ ServerObjectResponse::ServerObjectResponse(QTcpSocket * TCPSocket, CUCareDatabas
 */
 int ServerObjectResponse::fillObjectResponse(StorableInterface& requestObject, ServerObjectRequest::ObjectRequestType type){
 
-   if(type == ServerObjectRequest::Query){
+   if(type == ServerObjectRequest::Query || type == ServerObjectRequest::EqualityQuery){
         QList<QMap<QString, QVariant> > responseData;
 
-        int result = database->queryForObjects(requestObject, responseData);
+        bool equality = (type == ServerObjectRequest::EqualityQuery);
+        int result = database->queryForObjects(requestObject, responseData, equality);
         QString className = requestObject.className();
         fillXMLResponse(responseData, className);
 
         return result;
-    }else{
+
+   }else{
        int result;
 
 

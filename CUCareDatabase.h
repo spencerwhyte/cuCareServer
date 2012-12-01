@@ -60,8 +60,10 @@ public:
 
                 queryResults - Output parameter for the results
                 of the query being requested
+
+                equality - Whether or not we should check for exact equality
       */
-    int queryForObjects(StorableInterface & object,  QList< QMap < QString, QVariant> > & queryResults);
+    int queryForObjects(StorableInterface & object,  QList< QMap < QString, QVariant> > & queryResults, bool equality);
 
     // Destructor
     ~CUCareDatabase();

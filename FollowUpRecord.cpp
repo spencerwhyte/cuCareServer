@@ -5,10 +5,13 @@
 void FollowUpRecord::setStatusForString(QString s){
     if(QString::compare(QString("PENDING"),s) == 0){
         setStatus(PENDING);
+        return;
     }else if(QString::compare(QString("OVERDUE"),s) == 0){
         setStatus(OVERDUE);
+        return;
     }else if(QString::compare(QString("COMPLETE"),s) == 0){
         setStatus(COMPLETE);
+        return;
     }
     setStatus(INVALID);
 }
@@ -42,13 +45,13 @@ QString FollowUpRecord::getStatusString() const{
         static QString complete("COMPLETE");
         return complete;
     }else if(getStatus() == PENDING){
-        static QString complete("COMPLETE");
+        static QString complete("PENDING");
         return complete;
     }else if(getStatus() == OVERDUE){
-        static QString complete("COMPLETE");
+        static QString complete("OVERDUE");
         return complete;
     }
-    static QString invalid("INVALID");
+    static QString invalid("");
     return invalid;
 }
 

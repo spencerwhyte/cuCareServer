@@ -144,7 +144,7 @@ int CUCareDatabase::removeObject(StorableInterface & object){
             queryResults - Output parameter for the results
             of the query being requested
   */
-int CUCareDatabase::queryForObjects(StorableInterface & object,  QList< QMap < QString, QVariant> > & queryResults){
+int CUCareDatabase::queryForObjects(StorableInterface & object,  QList< QMap < QString, QVariant> > & queryResults, bool equality){
     if(!isDatabaseTableInitialized(object.className())){
         qDebug() << "Decided it needed to be initialized";
         initializeTableWithSchemaOfObject(object);
@@ -159,16 +159,24 @@ int CUCareDatabase::queryForObjects(StorableInterface & object,  QList< QMap < Q
     QString queryString("SELECT * FROM ");
     queryString += object.className();
 
-    queryString += " WHERE ";
+
     bool first = true;
     for(int i =0 ; i < keys.length() ;i ++){
         if((values.at(i).type() == QVariant::String) && values.at(i).toString().length() != 0){
+            if(first){
+                queryString += " WHERE ";
+            }
             if(!first){
                 queryString += " AND ";
             }
             first = false;
             queryString += keys.at(i);
-            queryString += " LIKE '%' || ? || '%'";
+            if(equality){
+                queryString += " = ? ";
+
+            }else{
+                queryString += " LIKE '%' || ? || '%'";
+            }
         }
     }
 

@@ -52,6 +52,8 @@ ServerObjectRequest::ObjectRequestType ServerObjectRequest::objectRequestTypeFor
          return Remove;
     }else if(type == ServerXMLRequest::Query){
          return Query;
+    }else if(type == ServerXMLRequest::EqualityQuery){
+        return EqualityQuery;
     }
     qDebug() << "Assertion failure: Defaulted to Query in ServerObjectRequest.cpp";
     return Query;

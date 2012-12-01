@@ -30,7 +30,8 @@ private slots:
     // Handles an incoming TCP connection
     void incomingConnection(int socket);
 
-
+private:
+    void populateServerTest(CUCareDatabase *database);
 
 
 };
