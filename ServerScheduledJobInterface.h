@@ -1,6 +1,7 @@
 #ifndef SERVERSCHEDULEDJOBINTERFACE_H
 #define SERVERSCHEDULEDJOBINTERFACE_H
 
+#include <QTime>
 
 /*
     This is the ServerScheduledJobInterface which is responsible for
@@ -31,11 +32,12 @@ class ServerScheduledJobInterface{
       */
     virtual bool getRepeats() = 0;
     /*
-      This method allows the implementing object to specify when it should
-      be ran next.
-           returns - The time at which to run the task next
+      This method allows the implementing object to specify the time of day
+      at which the job should be run
+
+           returns - The time of day at which this should be ran
     */
-    virtual QTime getTimeOfNextRun() = 0;
+    virtual QTime timeOfDay() = 0;
 
 protected:
     ~ServerScheduledJobInterface() {};
