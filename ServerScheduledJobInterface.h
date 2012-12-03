@@ -19,7 +19,6 @@
 */
 
 class ServerScheduledJobInterface{
-
     public:
 
     /* This method gets called on the implementing object everytime
@@ -27,6 +26,7 @@ class ServerScheduledJobInterface{
             returns - Either 0 for success, or the appropriate error code
      */
     virtual int run() = 0;
+
     /*
       This method allows the implementing object to specify whether or
       not this job should be run over and over again
@@ -37,6 +37,7 @@ class ServerScheduledJobInterface{
                       false if this job will be ran only once and then discarded
       */
     virtual bool getRepeats() = 0;
+
     /*
       This method allows the implementing object to specify the time of day
       at which the job should be run

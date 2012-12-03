@@ -260,7 +260,9 @@ bool CUCareDatabase::initializeTableWithSchemaOfObject(StorableInterface & first
     attributesAndValues.remove(firstObject.getIdentifierKey());
 
     qDebug() <<"IDENTIFIER KEY" << firstObject.getIdentifierKey();
+
     QList<QString> keys = attributesAndValues.keys();
+
     QList<QVariant> values = attributesAndValues.values();
 
     for(int i = 0 ; i < keys.length(); i++){

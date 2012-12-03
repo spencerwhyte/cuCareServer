@@ -9,6 +9,7 @@
 CUCareServerThread::CUCareServerThread(int s,CUCareDatabase * cd, QObject *parent){
     centralDatabase = cd;
     socket = s;
+
 }
 
 void CUCareServerThread::run(){

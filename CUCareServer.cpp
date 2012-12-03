@@ -29,7 +29,7 @@ CUCareServer::CUCareServer(QObject *parent){
 
 void CUCareServer::incomingConnection(int socket){
     qDebug() << "Incoming Connection Recieved";
-    CUCareServerThread *thread = new CUCareServerThread(socket, centralDatabase, this);
+    CUCareServerThread * thread = new CUCareServerThread(socket, centralDatabase, this);
     connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
     thread->start();
 }
@@ -41,8 +41,26 @@ void CUCareServer::populateServerTest(CUCareDatabase *database){
     User u;
     u.setUsername("Spencer Whyte");
     u.setUserType(User::Physician);
-
     database->addObject(u);
+
+
+    User u2;
+    u2.setUsername("Z");
+    u2.setUserType(User::Physician);
+    database->addObject(u2);
+
+    ConsultationRecord consult;
+    consult.setDiagnosis(QString("Cancer!"));
+    consult.setOHIPNumber(QString("314159"));
+    consult.setReason(QString("We thought they had cancer"));
+
+
+    FollowUpRecord follow;
+    follow.setConsultationRecordId(1);
+    follow.setStatus(FollowUpRecord::COMPLETE);
+    follow.setDueDateTime(QDateTime()); // Sets date and time to right now
+    follow.setDetails(QString("You require more minerals"));
+
 
     QFile f(":/new/coolidentifier/randomNames.csv");
     if (f.open(QIODevice::ReadOnly))

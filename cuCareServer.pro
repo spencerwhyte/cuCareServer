@@ -50,7 +50,8 @@ SOURCES += main.cpp \
     ServerTCPResponse.cpp \
     ServerScheduledJobManager.cpp \
     FollowUpRecord.cpp \
-    Record.cpp
+    Record.cpp \
+    AuditProcessManager.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -76,7 +77,8 @@ HEADERS += \
     ServerScheduledJobManager.h \
     ServerScheduledJobInterface.h \
     FollowUpRecord.h \
-    Record.h
+    Record.h \
+    AuditProcessManager.h
 
 QT += sql
 QT += network
