@@ -48,16 +48,90 @@ void CUCareServer::populateServerTest(CUCareDatabase *database){
     u2.setUserType(User::Physician);
     database->addObject(u2);
 
+    //ADD: Consultation 1
     ConsultationRecord consult;
     consult.setDiagnosis(QString("Cancer!"));
     consult.setOHIPNumber(QString("314159"));
     consult.setReason(QString("We thought they had cancer"));
+    consult.setDateAndTime(QDateTime::currentDateTime().addDays(-2));
+    database->addObject(consult);
 
     FollowUpRecord follow;
     follow.setConsultationRecordId(1);
     follow.setStatus(FollowUpRecord::COMPLETE);
-    follow.setDueDateTime(QDateTime()); // Sets date and time to right now
+    follow.setDueDateTime(QDateTime::currentDateTime()); // Sets date and time to right now
     follow.setDetails(QString("You require more minerals"));
+    database->addObject(follow);
+
+    FollowUpRecord follow2;
+    follow2.setConsultationRecordId(1);
+    follow2.setStatus(FollowUpRecord::COMPLETE);
+    follow2.setDueDateTime(QDateTime::currentDateTime().addDays(2)); // Sets date and time to right now
+    follow2.setDetails(QString("You require more Vespene gas"));
+    database->addObject(follow2);
+
+    FollowUpRecord follow3;
+    follow3.setConsultationRecordId(1);
+    follow3.setStatus(FollowUpRecord::PENDING);
+    follow3.setDueDateTime(QDateTime::currentDateTime().addDays(4)); // Sets date and time to right now
+    follow3.setDetails(QString("You must construct additional pylons"));
+    database->addObject(follow3);
+
+    //ADD: Consultation 2
+    ConsultationRecord consult2;
+    consult2.setDiagnosis(QString("Lupus!"));
+    consult2.setOHIPNumber(QString("314159"));
+    consult2.setReason(QString("We thought they had lupus"));
+    database->addObject(consult2);
+
+    FollowUpRecord follow4;
+    follow4.setConsultationRecordId(1);
+    follow4.setStatus(FollowUpRecord::COMPLETE);
+    follow4.setDueDateTime(QDateTime()); // Sets date and time to right now
+    follow4.setDetails(QString("You require more time"));
+    database->addObject(follow4);
+
+    FollowUpRecord follow5;
+    follow5.setConsultationRecordId(1);
+    follow5.setStatus(FollowUpRecord::COMPLETE);
+    follow5.setDueDateTime(QDateTime()); // Sets date and time to right now
+    follow5.setDetails(QString("You require more mana"));
+    database->addObject(follow5);
+
+    FollowUpRecord follow6;
+    follow6.setConsultationRecordId(1);
+    follow6.setStatus(FollowUpRecord::PENDING);
+    follow6.setDueDateTime(QDateTime()); // Sets date and time to right now
+    follow6.setDetails(QString("It's never lupus"));
+    database->addObject(follow6);
+
+    //ADD: Consultation 3
+    ConsultationRecord consult3;
+    consult3.setDiagnosis(QString("Friends!"));
+    consult3.setOHIPNumber(QString("314159"));
+    consult3.setReason(QString("We thought they wanted to be friends"));
+    database->addObject(consult3);
+
+    FollowUpRecord follow7;
+    follow7.setConsultationRecordId(1);
+    follow7.setStatus(FollowUpRecord::COMPLETE);
+    follow7.setDueDateTime(QDateTime()); // Sets date and time to right now
+    follow7.setDetails(QString("You require more minerals"));
+    database->addObject(follow7);
+
+    FollowUpRecord follow8;
+    follow8.setConsultationRecordId(1);
+    follow8.setStatus(FollowUpRecord::COMPLETE);
+    follow8.setDueDateTime(QDateTime()); // Sets date and time to right now
+    follow8.setDetails(QString("You require more Vespene gas"));
+    database->addObject(follow8);
+
+    FollowUpRecord follow9;
+    follow9.setConsultationRecordId(1);
+    follow9.setStatus(FollowUpRecord::PENDING);
+    follow9.setDueDateTime(QDateTime()); // Sets date and time to right now
+    follow9.setDetails(QString("You must construct additional pylons"));
+    database->addObject(follow9);
 
     QFile f(":/new/coolidentifier/randomNames.csv");
     if (f.open(QIODevice::ReadOnly))
