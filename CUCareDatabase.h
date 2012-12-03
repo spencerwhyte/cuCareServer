@@ -64,6 +64,12 @@ public:
                 equality - Whether or not we should check for exact equality
       */
     int queryForObjects(StorableInterface & object,  QList< QMap < QString, QVariant> > & queryResults, bool equality);
+    /*
+        Convienence method for determining if the database has any data in it yet.
+
+            returns - True of the database is empty
+     */
+    bool isEmpty();
 
     // Destructor
     ~CUCareDatabase();

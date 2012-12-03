@@ -82,3 +82,6 @@ QT += sql
 QT += network
 QT += xml
 
+RESOURCES += \
+    sampledata.qrc
+

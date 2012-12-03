@@ -77,6 +77,13 @@ int CUCareDatabase::addObject(StorableInterface & object){
             object - The object whose information is to be updated
   */
 int CUCareDatabase::editObject(StorableInterface & object){
+    if(!isDatabaseTableInitialized(object.className())){
+        qDebug() << "Decided it needed to be initialized";
+        initializeTableWithSchemaOfObject(object);
+    }
+
+
+
     qDebug() << "EDITING";
     QMap<QString, QVariant> attributesAndValues;
     object.getAttributesAndValues(attributesAndValues);
@@ -120,6 +127,12 @@ int CUCareDatabase::editObject(StorableInterface & object){
             object - The object to be removed
   */
 int CUCareDatabase::removeObject(StorableInterface & object){
+    if(!isDatabaseTableInitialized(object.className())){
+        qDebug() << "Decided it needed to be initialized";
+        initializeTableWithSchemaOfObject(object);
+    }
+
+
     QString queryString("DELETE FROM ");
     queryString += object.className();
 
@@ -218,6 +231,14 @@ CUCareDatabase::CUCareDatabase(QString * name, QObject *parent){
 // Destructor
 CUCareDatabase::~CUCareDatabase(){
 
+}
+
+bool CUCareDatabase::isEmpty(){
+    QStringList l = db.tables();
+    if(l.size() == 0){
+        return true;
+    }
+    return false;
 }
 
 bool CUCareDatabase::isDatabaseTableInitialized(QString className){

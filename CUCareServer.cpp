@@ -11,7 +11,9 @@ CUCareServer::CUCareServer(QObject *parent){
     qDebug() << "Starting Server...";
     centralDatabase = new CUCareDatabase(new QString("cuCare"), this);
 
-   //populateServerTest(centralDatabase);
+    if(centralDatabase->isEmpty()){ // If the server is empty, populate it for the TA
+        populateServerTest(centralDatabase);
+    }
 
     if (!this->listen(QHostAddress::Any,60007)) {
         qDebug() << "SERVER FAILED TO START";
@@ -34,8 +36,15 @@ void CUCareServer::incomingConnection(int socket){
 
 
 void CUCareServer::populateServerTest(CUCareDatabase *database){
+    qDebug() << "INITIALIZING SERVER";
 
-    QFile f("randomNames.csv");
+    User u;
+    u.setUsername("Spencer Whyte");
+    u.setUserType(User::Physician);
+
+    database->addObject(u);
+
+    QFile f(":/new/coolidentifier/randomNames.csv");
     if (f.open(QIODevice::ReadOnly))
     {
      //file opened successfully
@@ -43,7 +52,7 @@ void CUCareServer::populateServerTest(CUCareDatabase *database){
      data = f.readAll();
      QStringList vals = data.split('\n');
 
-     for(int i =0 ;i < 9500; i++){
+     for(int i =0 ;i < 100; i++){
          if(vals.at(i).length() != 0){
               PatientRecord p;
 

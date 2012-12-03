@@ -32,7 +32,6 @@ int ServerXMLRequest::fillXMLRequest(QMap<QString, QVariant> &xmlMapping, QStrin
 
     int result = this->fillHTTPRequest(body, url);
 
-
     requestTypeForUrl(type, url);
 
     classNameForUrl(name,url);

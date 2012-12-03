@@ -1,3 +1,9 @@
+/*
+  By: Spencer Whyte
+  # 100817664
+  Carleton University
+  */
+
 #ifndef SERVERSCHEDULEDJOBINTERFACE_H
 #define SERVERSCHEDULEDJOBINTERFACE_H
 
@@ -39,7 +45,6 @@ class ServerScheduledJobInterface{
     */
     virtual QTime timeOfDay() = 0;
 
-protected:
     ~ServerScheduledJobInterface() {};
 
 };
