@@ -43,7 +43,6 @@ void CUCareServer::populateServerTest(CUCareDatabase *database){
     u.setUserType(User::Physician);
     database->addObject(u);
 
-
     User u2;
     u2.setUsername("Z");
     u2.setUserType(User::Physician);
@@ -54,13 +53,11 @@ void CUCareServer::populateServerTest(CUCareDatabase *database){
     consult.setOHIPNumber(QString("314159"));
     consult.setReason(QString("We thought they had cancer"));
 
-
     FollowUpRecord follow;
     follow.setConsultationRecordId(1);
     follow.setStatus(FollowUpRecord::COMPLETE);
     follow.setDueDateTime(QDateTime()); // Sets date and time to right now
     follow.setDetails(QString("You require more minerals"));
-
 
     QFile f(":/new/coolidentifier/randomNames.csv");
     if (f.open(QIODevice::ReadOnly))

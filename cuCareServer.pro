@@ -87,3 +87,6 @@ QT += xml
 RESOURCES += \
     sampledata.qrc
 
+OTHER_FILES += \
+    randomNames.csv
+
