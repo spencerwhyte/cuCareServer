@@ -33,12 +33,9 @@ ServerHTTPRequest::ServerHTTPRequest(QTcpSocket * TCPSocket) : ServerTCPRequest(
          result = fillTCPRequest();
          data = getTCPData();
          if(result!=0){
-             qDebug() << "CONNECTION WITH CLIENT LOST";
              return result;
          }
-         qDebug() << "TRYING TO CONSTRUCT HTTP REQUEST";
      }while(constructHTTPRequestFromData(httpBody, url, data) != 0);
-      qDebug() << "HTTP REQUEST CONSTRUCTED";
      return 0;
 
  }
@@ -82,11 +79,7 @@ ServerHTTPRequest::ServerHTTPRequest(QTcpSocket * TCPSocket) : ServerTCPRequest(
      contentLengthLine.replace(QString("Content-Length: "), "");
 
      int contentLength = contentLengthLine.toInt();
-     if(DEBUG_FLAG){
-        qDebug() << contentLength;
-        qDebug() << header.length();
-        qDebug() <<data.length();
-     }
+
      if(contentLength + header.length() + 4 != data.length()){ // We need to have all of the body data before proceeding
          return 1;
      }
@@ -96,12 +89,6 @@ ServerHTTPRequest::ServerHTTPRequest(QTcpSocket * TCPSocket) : ServerTCPRequest(
      body = bodyData;
 
      url = httpUrl;
-
-     if(DEBUG_FLAG){
-        qDebug() << "DATA: " << data;
-        qDebug() << "BODY: " << body << "";
-        qDebug() << "URL: " << url << "";
-     }
 
      return 0;
 

@@ -12,7 +12,6 @@
             object - The object to be added
   */
 int CUCareDatabase::addObject(StorableInterface & object){
-                   qDebug() <<":(";
     if(!isDatabaseTableInitialized(object.className())){
         qDebug() << "Decided it needed to be initialized";
         initializeTableWithSchemaOfObject(object);
@@ -47,17 +46,13 @@ int CUCareDatabase::addObject(StorableInterface & object){
     }
     queryString += ")";
 
-
     QSqlQuery query;
     query.prepare(queryString);
     for(int i = 0 ; i < values.length(); i++){
         query.addBindValue(values.at(i));
     }
 
-
-
     query.exec();
-
 
     int id = query.lastInsertId().toInt();
 
@@ -78,10 +73,6 @@ int CUCareDatabase::editObject(StorableInterface & object){
         qDebug() << "Decided it needed to be initialized";
         initializeTableWithSchemaOfObject(object);
     }
-
-
-
-
 
     QMap<QString, QVariant> attributesAndValues;
     object.getAttributesAndValues(attributesAndValues);
@@ -190,7 +181,7 @@ int CUCareDatabase::queryForObjects(StorableInterface & object,  QList< QMap < Q
     QSqlQuery queryResult;
     queryResult.prepare(queryString);
     for(int i =0 ; i < keys.length() ;i ++){
-        if((values.at(i).type() == QVariant::String) && values.at(i).toString().length() != 0){
+        if(((values.at(i).type() == QVariant::String) && values.at(i).toString().length() != 0 )||( (values.at(i).type() == QVariant::Int) && values.at(i).toInt() != -1 )){
             queryResult.addBindValue(values.at(i).toString());
         }
     }

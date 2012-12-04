@@ -22,10 +22,10 @@ CUCareServer::CUCareServer(QObject *parent) : jobManager (new ServerScheduledJob
     }
 
     AuditProcessManager * aup = new AuditProcessManager(centralDatabase);
-    //PatientAuditProcessManager * papm = new PatientAuditProcessManager(centralDatabase);
+    PatientAuditProcessManager * papm = new PatientAuditProcessManager(centralDatabase);
 
     jobManager->scheduleJob(aup);
-    //jobManager->scheduleJob(papm);
+    jobManager->scheduleJob(papm);
 
     qDebug() << this->serverPort();
     qDebug() << this->serverAddress();
@@ -44,7 +44,7 @@ void CUCareServer::incomingConnection(int socket){
     thread->start();
 }
 
-void CUCareDatabase::addThreeEach(CUCareDatabase *database)
+/*void CUCareDatabase::addThreeEach(CUCareDatabase *database)
 {
     QString pgenBase = "PatientGen_";
     QString cgenBase = "ConsultGen_";
@@ -92,6 +92,7 @@ void CUCareDatabase::addThreeEach(CUCareDatabase *database)
         }
     }
 }
+*/
 
 void CUCareServer::populateServerTest(CUCareDatabase *database){
     qDebug() << "INITIALIZING SERVER";
@@ -102,8 +103,8 @@ void CUCareServer::populateServerTest(CUCareDatabase *database){
     database->addObject(u);
 
     User u2;
-    u2.setUsername("Z");
-    u2.setUserType(User::Physician);
+    u2.setUsername("Charles");
+    u2.setUserType(User::MedicalPersonnel);
     database->addObject(u2);
 
     //ADD: Consultation 1

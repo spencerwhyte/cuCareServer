@@ -47,13 +47,11 @@ int PatientAuditProcessManager::run(){
     for(int i = 0 ; i < patients.length(); i++){
 
         PatientRecord * currentPatient = (PatientRecord *)patients.at(i);
-        qDebug() << currentPatient->getOHIPNumber();
         for(int j = 0; j < consultations.length(); j++){
             ConsultationRecord * currentConsultation = (ConsultationRecord *)consultations.at(j);
             if(QString::compare(currentPatient->getOHIPNumber(), currentConsultation->getOHIPNumber()) == 0){ // This is a consultation for the current patient
                 for(int k = 0 ; k < followUps.length(); k++){
                     FollowUpRecord * currentFollowUp = (FollowUpRecord *)followUps.at(k);
-                    qDebug()<<currentFollowUp->getConsultationRecordId();
                     if(currentFollowUp->getConsultationRecordId() == currentConsultation->getId()){
                         bool shouldUpdate = false;
                         if(currentFollowUp->getStatus() == FollowUpRecord::OVERDUE && !currentPatient->getHasOverDueFollowUps()){
