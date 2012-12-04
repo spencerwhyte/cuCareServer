@@ -37,7 +37,7 @@ private:
       Added by Aaron Crozman (Student #100817740)
       Adds three patients, then for each of those patients, adds three consultation records, then adds three followups for each of those.
       */
-    bool addThreeEach(CUCareDatabase *database);
+    void addThreeEach(CUCareDatabase *database);
 
 
 };
