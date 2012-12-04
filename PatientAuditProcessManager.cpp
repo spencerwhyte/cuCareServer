@@ -1,4 +1,4 @@
-#include "AuditProcessManager.h"
+#include "PatientAuditProcessManager.h"
 
 
 
@@ -9,41 +9,19 @@
         returns - Either 0 for success, or the appropriate error code
 
  */
-int AuditProcessManager::run(){
-    qDebug() << "AUDIT FOLLOW UPS";
-
+int PatientAuditProcessManager::run(){
 
     QList<StorableInterface*> followUps;
     FollowUpRecord f;
     QList< QMap < QString, QVariant> > followUpsData;
-
-    //queryForObjects(StorableInterface & object,  QList< QMap < QString, QVariant> > & queryResults, bool equality);
-
     database->queryForObjects(f,followUpsData, false);
-
     for(int i = 0 ; i < followUpsData.length(); i++){
         QString className = f.className();
         FollowUpRecord * current = (FollowUpRecord *)StorableFactory::GetFactory().getInstance(&className);
         current->setAttributesAndValues(followUpsData.at(i));
-
-
-
         followUps.append(current);
-        if(current->getStatus() == FollowUpRecord::PENDING && current->getDueDateTime().secsTo(QDateTime::currentDateTime()) > 0){
-            qDebug() <<"APARENTLY "  << current->getDueDateTime() << " IS LATER THAN " << QDateTime::currentDateTime();
-
-
-           // qDebug() << followUpsData.at(i);
-
-            current->setStatus(FollowUpRecord::OVERDUE);
-            StorableInterface * object = (StorableInterface*)current;
-           database->editObject(*object);
-           qDebug() << current->getStatusString();
-           qDebug() << current->getDueDateTime().toString();
-           qDebug() << "MARKING RECORD AS OVERDUE";
-        }
     }
-    /*
+
     QList<StorableInterface*> consultations;
     QList< QMap < QString, QVariant> > consultationsData;
     ConsultationRecord c;
@@ -55,13 +33,11 @@ int AuditProcessManager::run(){
         consultations.append(current);
     }
 
-
     QList<StorableInterface*> patients;
     PatientRecord p;
     QList< QMap < QString, QVariant> > patientsData;
     database->queryForObjects(p, patientsData, false);
-
-    for(int i = 0 ; i < patients.length(); i++){
+    for(int i = 0 ; i < patientsData.length(); i++){
         QString className = p.className();
         PatientRecord * current = (PatientRecord*)StorableFactory::GetFactory().getInstance(&className);
         current->setAttributesAndValues(patientsData.at(i));
@@ -69,35 +45,41 @@ int AuditProcessManager::run(){
     }
 
     for(int i = 0 ; i < patients.length(); i++){
-        PatientRecord * currentPatient = (PatientRecord *)patients.at(i);
-        for(int j = 0; j < consultations.length(); j++){
-            ConsultationRecord * currentConsultation = (ConsultationRecord *)consultations.at(i);
-            if(currentPatient->getOHIPNumber() == currentConsultation->getOHIPNumber()){ // This is a consultation for the current patient
-                for(int k = 0 ; k < followUps.length(); k++){
-                    FollowUpRecord * currentFollowUp = (FollowUpRecord *)followUps.at(i);
-                    if(currentFollowUp->getConsultationRecordId() == currentConsultation->getId()){
-                        if(currentFollowUp->getStatus() == FollowUpRecord::OVERDUE){
-                            currentPatient->setHasOverDueFollowUps(true);
-                        }
-                        if(currentFollowUp->getStatus() == FollowUpRecord::COMPLETE){
-                            currentPatient->setHasCompletedFollowUps(true);
 
+        PatientRecord * currentPatient = (PatientRecord *)patients.at(i);
+        qDebug() << currentPatient->getOHIPNumber();
+        for(int j = 0; j < consultations.length(); j++){
+            ConsultationRecord * currentConsultation = (ConsultationRecord *)consultations.at(j);
+            if(QString::compare(currentPatient->getOHIPNumber(), currentConsultation->getOHIPNumber()) == 0){ // This is a consultation for the current patient
+                for(int k = 0 ; k < followUps.length(); k++){
+                    FollowUpRecord * currentFollowUp = (FollowUpRecord *)followUps.at(k);
+                    qDebug()<<currentFollowUp->getConsultationRecordId();
+                    if(currentFollowUp->getConsultationRecordId() == currentConsultation->getId()){
+                        bool shouldUpdate = false;
+                        if(currentFollowUp->getStatus() == FollowUpRecord::OVERDUE && !currentPatient->getHasOverDueFollowUps()){
+                            currentPatient->setHasOverDueFollowUps(true);
+                            shouldUpdate = true;
                         }
-                        if(currentFollowUp->getStatus() == FollowUpRecord::PENDING){
+                        if(currentFollowUp->getStatus() == FollowUpRecord::COMPLETE && !currentPatient->getHasCompletedFollowUps()){
+                            currentPatient->setHasCompletedFollowUps(true);
+                            shouldUpdate = true;
+                        }
+                        if(currentFollowUp->getStatus() == FollowUpRecord::PENDING && !currentPatient->getHasPendingFollowUps()){
                             currentPatient->setHasPendingFollowUps(true);
+                            shouldUpdate = true;
+                        }
+                        if(shouldUpdate){
+                           database->editObject(*currentPatient);
                         }
                     }
-
-
                 }
 
             }
-
-
         }
-
     }
-*/
+    qDeleteAll(patients);
+    qDeleteAll(followUps);
+    qDeleteAll(consultations);
 }
 
 /*
@@ -109,7 +91,7 @@ int AuditProcessManager::run(){
 
                   false if this job will be ran only once and then discarded
   */
- bool AuditProcessManager::getRepeats(){
+ bool PatientAuditProcessManager::getRepeats(){
     return true;
 }
 
@@ -119,23 +101,15 @@ int AuditProcessManager::run(){
 
        returns - The time of day at which this should be ran
 */
-QTime AuditProcessManager::timeOfDay(){
-    return QTime(*time);
-}
-
-/*
-  Sets the time of day when the audit process should run.
-  */
-void AuditProcessManager::setTimeOfDay(QTime newTime){
-    delete time;
-    time = new QTime(newTime);
+QTime PatientAuditProcessManager::timeOfDay(){
+    return QTime(QTime::currentTime().addSecs(10));
 }
 
 
-AuditProcessManager::AuditProcessManager(CUCareDatabase * d) : time(new QTime(QTime::currentTime().addSecs(10))){
+PatientAuditProcessManager::PatientAuditProcessManager(CUCareDatabase * d) : time(new QTime(QTime::currentTime().addSecs(10))){
     database = d;
 }
 
-AuditProcessManager::~AuditProcessManager(){
+PatientAuditProcessManager::~PatientAuditProcessManager(){
         delete time;
 }

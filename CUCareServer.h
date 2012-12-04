@@ -9,6 +9,9 @@
 #include <QTcpSocket>
 #include <CUCareDatabase.h>
 #include <CUCareServerThread.h>
+#include <AuditProcessManager.h>
+#include <ServerScheduledJobManager.h>
+#include <PatientAuditProcessManager.h>
 
 /*
   The purpose of the CUCareServer object is to handle incoming TCP
@@ -18,10 +21,11 @@
 class CUCareServer : public QTcpServer
 {
      Q_OBJECT
+     ServerScheduledJobManager * jobManager;
 public:
     // Constructor
     CUCareServer(QObject *parent = 0);
-
+    ~CUCareServer();
 protected:
     // The database that will be used to store all of the information
     // for this server

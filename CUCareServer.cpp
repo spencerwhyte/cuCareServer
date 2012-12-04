@@ -7,7 +7,7 @@
 
 
 
-CUCareServer::CUCareServer(QObject *parent){
+CUCareServer::CUCareServer(QObject *parent) : jobManager (new ServerScheduledJobManager()){
     qDebug() << "Starting Server...";
     centralDatabase = new CUCareDatabase(new QString("cuCare"), this);
 
@@ -21,10 +21,20 @@ CUCareServer::CUCareServer(QObject *parent){
         return;
     }
 
+    AuditProcessManager * aup = new AuditProcessManager(centralDatabase);
+    //PatientAuditProcessManager * papm = new PatientAuditProcessManager(centralDatabase);
+
+    jobManager->scheduleJob(aup);
+    //jobManager->scheduleJob(papm);
+
     qDebug() << this->serverPort();
     qDebug() << this->serverAddress();
 
     qDebug() << "Server Started";
+}
+
+CUCareServer::~CUCareServer(){
+    delete jobManager;
 }
 
 void CUCareServer::incomingConnection(int socket){
@@ -58,14 +68,14 @@ void CUCareServer::populateServerTest(CUCareDatabase *database){
 
     FollowUpRecord follow;
     follow.setConsultationRecordId(1);
-    follow.setStatus(FollowUpRecord::COMPLETE);
+    follow.setStatus(FollowUpRecord::PENDING);
     follow.setDueDateTime(QDateTime::currentDateTime()); // Sets date and time to right now
     follow.setDetails(QString("You require more minerals"));
     database->addObject(follow);
 
     FollowUpRecord follow2;
     follow2.setConsultationRecordId(1);
-    follow2.setStatus(FollowUpRecord::COMPLETE);
+    follow2.setStatus(FollowUpRecord::PENDING);
     follow2.setDueDateTime(QDateTime::currentDateTime().addDays(2)); // Sets date and time to right now
     follow2.setDetails(QString("You require more Vespene gas"));
     database->addObject(follow2);
@@ -82,26 +92,27 @@ void CUCareServer::populateServerTest(CUCareDatabase *database){
     consult2.setDiagnosis(QString("Lupus!"));
     consult2.setOHIPNumber(QString("314159"));
     consult2.setReason(QString("We thought they had lupus"));
+    consult2.setDateAndTime(QDateTime::currentDateTime().addDays(-5));
     database->addObject(consult2);
 
     FollowUpRecord follow4;
     follow4.setConsultationRecordId(1);
     follow4.setStatus(FollowUpRecord::COMPLETE);
-    follow4.setDueDateTime(QDateTime()); // Sets date and time to right now
+    follow4.setDueDateTime(QDateTime().addMonths(2)); // Sets date and time to right now
     follow4.setDetails(QString("You require more time"));
     database->addObject(follow4);
 
     FollowUpRecord follow5;
     follow5.setConsultationRecordId(1);
     follow5.setStatus(FollowUpRecord::COMPLETE);
-    follow5.setDueDateTime(QDateTime()); // Sets date and time to right now
+    follow5.setDueDateTime(QDateTime().addDays(11)); // Sets date and time to right now
     follow5.setDetails(QString("You require more mana"));
     database->addObject(follow5);
 
     FollowUpRecord follow6;
     follow6.setConsultationRecordId(1);
     follow6.setStatus(FollowUpRecord::PENDING);
-    follow6.setDueDateTime(QDateTime()); // Sets date and time to right now
+    follow6.setDueDateTime(QDateTime().addDays(-10)); // Sets date and time to right now
     follow6.setDetails(QString("It's never lupus"));
     database->addObject(follow6);
 
@@ -110,26 +121,27 @@ void CUCareServer::populateServerTest(CUCareDatabase *database){
     consult3.setDiagnosis(QString("Friends!"));
     consult3.setOHIPNumber(QString("314159"));
     consult3.setReason(QString("We thought they wanted to be friends"));
+    consult3.setDateAndTime(QDateTime().addDays(-10));
     database->addObject(consult3);
 
     FollowUpRecord follow7;
     follow7.setConsultationRecordId(1);
     follow7.setStatus(FollowUpRecord::COMPLETE);
-    follow7.setDueDateTime(QDateTime()); // Sets date and time to right now
+    follow7.setDueDateTime(QDateTime().addMonths(1)); // Sets date and time to right now
     follow7.setDetails(QString("You require more minerals"));
     database->addObject(follow7);
 
     FollowUpRecord follow8;
     follow8.setConsultationRecordId(1);
     follow8.setStatus(FollowUpRecord::COMPLETE);
-    follow8.setDueDateTime(QDateTime()); // Sets date and time to right now
+    follow8.setDueDateTime(QDateTime().addMonths(5)); // Sets date and time to right now
     follow8.setDetails(QString("You require more Vespene gas"));
     database->addObject(follow8);
 
     FollowUpRecord follow9;
     follow9.setConsultationRecordId(1);
     follow9.setStatus(FollowUpRecord::PENDING);
-    follow9.setDueDateTime(QDateTime()); // Sets date and time to right now
+    follow9.setDueDateTime(QDateTime::currentDateTime()); // Sets date and time to right now
     follow9.setDetails(QString("You must construct additional pylons"));
     database->addObject(follow9);
 
@@ -141,13 +153,13 @@ void CUCareServer::populateServerTest(CUCareDatabase *database){
      data = f.readAll();
      QStringList vals = data.split('\n');
 
-     for(int i =0 ;i < 100; i++){
+     for(int i =1 ;i < 100; i++){
          if(vals.at(i).length() != 0){
               PatientRecord p;
 
               p.setName(vals.at(i));
 
-              p.setOHIPNumber(QString::number(314159 + i));
+              p.setOHIPNumber(QString::number(314159 + i - 1));
 
               p.setPrimaryPhysician(QString("Spencer Whyte"));
 
@@ -167,12 +179,9 @@ void CUCareServer::populateServerTest(CUCareDatabase *database){
 
               p.setPhoneNumber(phoneNumber);
 
-
-
               centralDatabase->addObject(p);
 
-
-             qDebug() << vals.at(i);
+            // qDebug() << vals.at(i);
          }
      }
 

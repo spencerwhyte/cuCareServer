@@ -27,10 +27,6 @@ class ServerScheduledJobManager : public QObject
     QList<QTimer *> * timers;
 
 public:
-    static ServerScheduledJobManager& GetManager(){
-        static ServerScheduledJobManager currentManger;
-        return currentManger;
-    }
 
     /*
       Schedules a job to be run. The job implements the
@@ -48,13 +44,10 @@ public:
         job - The job to be unscheduled
       */
     void unscheduleJob(ServerScheduledJobInterface *job);
-private:
 
 
     ServerScheduledJobManager();
     ~ServerScheduledJobManager();
-    ServerScheduledJobManager(ServerScheduledJobManager const&);
-    void operator=(ServerScheduledJobManager const&);
 
 private slots:
     void timerFired();

@@ -20,6 +20,8 @@ int ServerHTTPResponse::fillHTTPResponse(QString & body){
     header.append("Content-Length: ");
     header.append(new QString(QString::number(body.length())));
     header.append("\r\n");
+    header.append("Content-Type: text/xml");
+    header.append("\r\n");
     header.append("\r\n");
 
     responseData.append(header);

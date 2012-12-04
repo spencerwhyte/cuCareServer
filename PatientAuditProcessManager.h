@@ -1,6 +1,5 @@
-#ifndef AUDITPROCESSMANAGER_H
-#define AUDITPROCESSMANAGER_H
-
+#ifndef PATIENTAUDITPROCESSMANAGER_H
+#define PATIENTAUDITPROCESSMANAGER_H
 #include "ServerScheduledJobInterface.h"
 #include <QDebug>
 #include "CUCareDatabase.h"
@@ -8,16 +7,11 @@
 #include "PatientRecord.h"
 #include "StorableFactory.h"
 
-class AuditProcessManager : public  ServerScheduledJobInterface
+class PatientAuditProcessManager : public ServerScheduledJobInterface
 {
     QTime * time;
     CUCareDatabase * database;
 public:
-    /*
-  Sets the time of day when the audit process should run.
-  */
-    void setTimeOfDay(QTime newTime);
-
     /* This method gets called on the implementing object everytime
     the job is scheduled to run
         returns - Either 0 for success, or the appropriate error code
@@ -41,8 +35,8 @@ public:
 */
      QTime timeOfDay();
 
-    AuditProcessManager(CUCareDatabase * d);
-    ~AuditProcessManager();
+    PatientAuditProcessManager(CUCareDatabase * d);
+    ~PatientAuditProcessManager();
 };
 
-#endif // AUDITPROCESSMANAGER_H
+#endif // PATIENTAUDITPROCESSMANAGER_H

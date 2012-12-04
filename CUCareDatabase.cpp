@@ -22,8 +22,6 @@ int CUCareDatabase::addObject(StorableInterface & object){
     QMap<QString, QVariant> attributesAndValues;
     object.getAttributesAndValues(attributesAndValues);
 
-    qDebug() << attributesAndValues;
-
     attributesAndValues.remove(object.getIdentifierKey());
     QList<QString> keys = attributesAndValues.keys();
     QList<QVariant> values = attributesAndValues.values();
@@ -48,25 +46,24 @@ int CUCareDatabase::addObject(StorableInterface & object){
         }
     }
     queryString += ")";
-    qDebug() << queryString;
+
 
     QSqlQuery query;
     query.prepare(queryString);
     for(int i = 0 ; i < values.length(); i++){
-        qDebug() << values.at(i);
         query.addBindValue(values.at(i));
     }
 
-    qDebug() << query.boundValues();
+
 
     query.exec();
+
 
     int id = query.lastInsertId().toInt();
 
     attributesAndValues.insert(object.getIdentifierKey(), QVariant(id));
     object.setAttributesAndValues(attributesAndValues);
 
-    qDebug() << query.numRowsAffected();
 
     return !(query.numRowsAffected() == 0 || query.numRowsAffected() == -1);
 }
@@ -84,7 +81,8 @@ int CUCareDatabase::editObject(StorableInterface & object){
 
 
 
-    qDebug() << "EDITING";
+
+
     QMap<QString, QVariant> attributesAndValues;
     object.getAttributesAndValues(attributesAndValues);
     QVariant uniqueIdentifier = attributesAndValues.value(object.getIdentifierKey());
@@ -116,7 +114,6 @@ int CUCareDatabase::editObject(StorableInterface & object){
 
     query.exec();
 
-    qDebug() << query.lastError();
 
     return !(query.numRowsAffected() == 0 || query.numRowsAffected() == -1);
 }
@@ -131,7 +128,6 @@ int CUCareDatabase::removeObject(StorableInterface & object){
         qDebug() << "Decided it needed to be initialized";
         initializeTableWithSchemaOfObject(object);
     }
-
 
     QString queryString("DELETE FROM ");
     queryString += object.className();
@@ -171,12 +167,9 @@ int CUCareDatabase::queryForObjects(StorableInterface & object,  QList< QMap < Q
 
     QString queryString("SELECT * FROM ");
     queryString += object.className();
-
-    qDebug() << " CLASS NAME " << object.className();
-
     bool first = true;
     for(int i =0 ; i < keys.length() ;i ++){
-        if((values.at(i).type() == QVariant::String) && values.at(i).toString().length() != 0){
+        if(((values.at(i).type() == QVariant::String) && values.at(i).toString().length() != 0 )||( (values.at(i).type() == QVariant::Int) && values.at(i).toInt() != -1 )){
             if(first){
                 queryString += " WHERE ";
             }
@@ -199,8 +192,6 @@ int CUCareDatabase::queryForObjects(StorableInterface & object,  QList< QMap < Q
     for(int i =0 ; i < keys.length() ;i ++){
         if((values.at(i).type() == QVariant::String) && values.at(i).toString().length() != 0){
             queryResult.addBindValue(values.at(i).toString());
-
-            qDebug() <<"BINDING VALUE" << values.at(i).toString();
         }
     }
 

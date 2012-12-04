@@ -1,17 +1,14 @@
 #include "ServerScheduledJobManager.h"
 
-
-
 void ServerScheduledJobManager::scheduleJob(ServerScheduledJobInterface *job){
     jobs->append(job);
     QTimer * currentTimer = new QTimer();
     long interval = QTime::currentTime().msecsTo(job->timeOfDay());
     currentTimer->setInterval(interval);
     currentTimer->setSingleShot(true);
+    currentTimer->start();
     timers->append(currentTimer);
-
     QObject::connect(currentTimer,SIGNAL(timeout()),this,SLOT(timerFired()));
-
 }
 
 void ServerScheduledJobManager::unscheduleJob(ServerScheduledJobInterface *job){
@@ -28,27 +25,23 @@ void ServerScheduledJobManager::unscheduleJob(ServerScheduledJobInterface *job){
 }
 
 void ServerScheduledJobManager::timerFired(){
-
     for(int i = 0; i < timers->length(); i++){
         if(!timers->at(i)->isActive()){ // Then it must have just fired
-           ServerScheduledJobInterface * currentJob = jobs->at(i);
-            currentJob->run();
-
-            qDebug() << "FOUND THE TIMER THAT IS TO BE FIRED";
-
-            QTimer * currentTimer = timers->at(i);
 
             QTime currentTime = QTime::currentTime();
-
+            ServerScheduledJobInterface * currentJob = jobs->at(i);
+            QTimer * currentTimer = timers->at(i);
             currentTime.addSecs(1);
-
             long interval = currentTime.msecsTo(jobs->at(i)->timeOfDay());
+            currentJob->run();
 
             if(interval < 0){
                 interval = 86400*1000 + interval;
             }
 
             currentTimer->setInterval(interval);
+
+            currentTimer->start();
 
         }
     }
