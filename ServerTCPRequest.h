@@ -25,6 +25,9 @@ class ServerTCPRequest
     // The TCP socket over which all of the request
     // data comes
     QTcpSocket * TCPSocket;
+
+    QString * getAllData();
+    QTcpSocket * getTCPSocket();
 public:
     // Getters
     QString * getTCPData();

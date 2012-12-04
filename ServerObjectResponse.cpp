@@ -23,7 +23,7 @@ int ServerObjectResponse::fillObjectResponse(StorableInterface& requestObject, S
         QList<QMap<QString, QVariant> > responseData;
 
         bool equality = (type == ServerObjectRequest::EqualityQuery);
-        int result = database->queryForObjects(requestObject, responseData, equality);
+        int result = getDatabase()->queryForObjects(requestObject, responseData, equality);
         QString className = requestObject.className();
         fillXMLResponse(responseData, className);
 
@@ -34,23 +34,25 @@ int ServerObjectResponse::fillObjectResponse(StorableInterface& requestObject, S
 
 
        if(type == ServerObjectRequest::Add){
-            result = database->addObject(requestObject);
+            result = getDatabase()->addObject(requestObject);
        }else if(type == ServerObjectRequest::Edit){
-            result = database->editObject(requestObject);
+            result = getDatabase()->editObject(requestObject);
        }else if(type == ServerObjectRequest::Remove){
-            result = database->removeObject(requestObject);
+            result = getDatabase()->removeObject(requestObject);
        }
 
        QList<QMap<QString, QVariant> > responseData;
        QMap<QString, QVariant> data;
        requestObject.getAttributesAndValues(data);
-       qDebug() << "RAW DATA: " << data;
        responseData.append(data);
        QString className = requestObject.className();
-       qDebug() <<"DATA IN LIST: " <<responseData;
        fillXMLResponse(responseData, className);
        return result;
     }
+}
+
+CUCareDatabase * ServerObjectResponse::getDatabase(){
+    return database;
 }
 
 // Destructor

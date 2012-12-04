@@ -18,6 +18,8 @@ class ServerTCPResponse
 {
 private:
     QTcpSocket * socket;
+
+    QTcpSocket * getSocket();
 public:
     /*
       Creates a TCPResponse object with the TCP socket

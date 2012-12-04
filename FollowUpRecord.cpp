@@ -99,8 +99,18 @@ QString FollowUpRecord:: className() const{
 }
 
 // Constructor / Destructor
-FollowUpRecord::FollowUpRecord() : status(INVALID), dueDateTime(new QDateTime()), details(new QString()), consultationRecordId(-1){
+FollowUpRecord::FollowUpRecord() :
+    status(INVALID),
+    dueDateTime(new QDateTime()),
+    details(new QString()),
+    consultationRecordId(-1){
+}
 
+FollowUpRecord::FollowUpRecord(QString & s, QDateTime &ddat,QString&d, int co){
+    setStatusForString(s);
+    setDueDateTime(ddat);
+    setDetails(d);
+    setConsultationRecordId(co);
 }
 
 FollowUpRecord::~FollowUpRecord(){

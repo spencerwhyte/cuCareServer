@@ -56,6 +56,7 @@ public:
     virtual QString className() const;
 
     // Constructor / Destructor
+    FollowUpRecord(QString & s, QDateTime &ddat,QString&d, int co);
     FollowUpRecord();
     ~FollowUpRecord();
 };

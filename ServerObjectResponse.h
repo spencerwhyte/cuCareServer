@@ -23,8 +23,11 @@
 
 class ServerObjectResponse : public ServerXMLResponse
 {
+     CUCareDatabase * database;
+
+     CUCareDatabase * getDatabase();
 public:
-    CUCareDatabase * database;
+
     /*
       Creates a new TCPResponse object with the TCP Socket
       over which the data of the response will be sent

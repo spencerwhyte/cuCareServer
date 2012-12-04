@@ -14,7 +14,7 @@ int AuditProcessManager::run(){
     QList<StorableInterface*> followUps;
     FollowUpRecord f;
     QList< QMap < QString, QVariant> > followUpsData;
-    database->queryForObjects(f,followUpsData, false);
+    getDatabase()->queryForObjects(f,followUpsData, false);
     for(int i = 0 ; i < followUpsData.length(); i++){
         QString className = f.className();
         FollowUpRecord * current = (FollowUpRecord *)StorableFactory::GetFactory().getInstance(&className);
@@ -23,7 +23,7 @@ int AuditProcessManager::run(){
         if(current->getStatus() == FollowUpRecord::PENDING && current->getDueDateTime().secsTo(QDateTime::currentDateTime()) > 0){
             current->setStatus(FollowUpRecord::OVERDUE);
             StorableInterface * object = (StorableInterface*)current;
-           database->editObject(*object);
+            getDatabase()->editObject(*object);
         }
     }
     qDebug() << "Audit process complete";
@@ -49,7 +49,7 @@ int AuditProcessManager::run(){
        returns - The time of day at which this should be ran
 */
 QTime AuditProcessManager::timeOfDay(){
-    return QTime(*time);
+    return QTime(*getTime());
 }
 
 /*
@@ -61,10 +61,36 @@ void AuditProcessManager::setTimeOfDay(QTime newTime){
 }
 
 
-AuditProcessManager::AuditProcessManager(CUCareDatabase * d) : time(new QTime(QTime::currentTime().addSecs(10))){
-    database = d;
+AuditProcessManager::AuditProcessManager(CUCareDatabase * d) :
+    time(new QTime(QTime::currentTime().addSecs(10))),
+    database(d),
+    settings(new QSettings(QString("./AuditFollowUps.config"), QSettings::IniFormat))
+    {
+
+    int h = getSettings()->value(QString("Hour"),QVariant(QTime::currentTime().hour())).toInt();
+    int m = getSettings()->value(QString("Minute"),QVariant(QTime::currentTime().minute())).toInt();
+    int s = getSettings()->value(QString("Second"),QVariant(QTime::currentTime().second())).toInt();
+    time->setHMS(h,m,s);
+    if(getSettings()->allKeys().length() ==0){
+        getSettings()->setValue(QString("Hour"), QVariant(h));
+        getSettings()->setValue(QString("Minute"), QVariant(m));
+        getSettings()->setValue(QString("Second"), QVariant(s));
+    }
+}
+
+QTime * AuditProcessManager::getTime(){
+    return time;
+}
+
+CUCareDatabase * AuditProcessManager::getDatabase(){
+    return database;
+}
+
+QSettings * AuditProcessManager::getSettings(){
+    return settings;
 }
 
 AuditProcessManager::~AuditProcessManager(){
         delete time;
+        delete settings;
 }

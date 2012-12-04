@@ -28,14 +28,16 @@ public:
     explicit CUCareServerThread(int s, CUCareDatabase * cd, QObject *parent = 0);
     // Begins running the thread
     void run();
- signals:
+signals:
     // Tells us if there was an error with the current session
     // with the client
-         void error(QTcpSocket::SocketError socketError);
+    void error(QTcpSocket::SocketError socketError);
     
 public slots:
     
 private:
+    int getSocket();
+    CUCareDatabase * getCentralDatabase();
     //  The socket connection to the current client
     int socket;
     // The database where all of the data for the current session

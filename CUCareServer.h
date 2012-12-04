@@ -22,14 +22,17 @@ class CUCareServer : public QTcpServer
 {
      Q_OBJECT
      ServerScheduledJobManager * jobManager;
+     ServerScheduledJobManager * getJobManager();
+     // The database that will be used to store all of the information
+     // for this server
+     CUCareDatabase * centralDatabase;
+     CUCareDatabase * getCentralDatabase();
 public:
     // Constructor
     CUCareServer(QObject *parent = 0);
     ~CUCareServer();
 protected:
-    // The database that will be used to store all of the information
-    // for this server
-    CUCareDatabase * centralDatabase;
+
 private slots:
     // Handles an incoming TCP connection
     void incomingConnection(int socket);

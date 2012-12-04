@@ -104,7 +104,7 @@ QTime PatientAuditProcessManager::timeOfDay(){
 }
 
 
-PatientAuditProcessManager::PatientAuditProcessManager(CUCareDatabase * d) : time(new QTime(QTime::currentTime().addSecs(10))){
+PatientAuditProcessManager::PatientAuditProcessManager(CUCareDatabase * d) : time(new QTime(QTime::currentTime().addSecs(20))){
     database = d;
 }
 

@@ -126,8 +126,22 @@ QString PatientRecord::className() const{
 }
 
 // Constructor and destructor
-PatientRecord::PatientRecord(): name(new QString()), phoneNumber(new QString()), OHIPNumber(new QString()), primaryPhysician(new QString()),hasOverDueFollowUps(false), hasPendingFollowUps(false), hasCompletedFollowUps(false){
+PatientRecord::PatientRecord():
+    name(new QString()),
+    phoneNumber(new QString()),
+    OHIPNumber(new QString()),
+    primaryPhysician(new QString()),
+    hasOverDueFollowUps(false),
+    hasPendingFollowUps(false),
+    hasCompletedFollowUps(false){
 
+}
+
+PatientRecord::PatientRecord(QString &n,QString&p, QString&o, QString &pp){
+    setName(n);
+    setOHIPNumber(o);
+    setPhoneNumber(p);
+    setPrimaryPhysician(pp);
 }
 
 PatientRecord::~PatientRecord(){

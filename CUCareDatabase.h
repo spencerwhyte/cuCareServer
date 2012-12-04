@@ -31,10 +31,11 @@
 class CUCareDatabase : public QObject
 {
     Q_OBJECT
-public:
     // The database that will be used to store all of
     // it's objects
     QSqlDatabase  db;
+public:
+
     /*
         Adds an object to the database
 

@@ -18,10 +18,14 @@ ServerTCPResponse::ServerTCPResponse(QTcpSocket * TCPSocket) : socket(TCPSocket)
 int ServerTCPResponse::fillTCPResponse(QString & data){
     QByteArray byteArrayOfData;
     byteArrayOfData.append(data);
-    socket->write(byteArrayOfData);
-    socket->waitForBytesWritten(5000);
-    socket->disconnect();
+    getSocket()->write(byteArrayOfData);
+    getSocket()->waitForBytesWritten(5000);
+    getSocket()->disconnect();
     return 0;
+}
+
+QTcpSocket * ServerTCPResponse::getSocket(){
+    return socket;
 }
 
 // Destructor

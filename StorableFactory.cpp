@@ -12,7 +12,6 @@ StorableInterface * StorableFactory::getInstance(QString * className){
     }else if(className->compare(*className, QString("User"), Qt::CaseInsensitive) == 0){
         return new User();
     }
-    qDebug()<< "An error occured in StorableFactory.cpp when trying to construct a storable object from the string " << *className;
     return NULL;
 }
 

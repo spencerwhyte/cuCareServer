@@ -32,6 +32,15 @@ ServerTCPRequest::ServerTCPRequest(QTcpSocket * s) : TCPSocket(s) , allData(new 
 
 }
 
+
+QString * ServerTCPRequest::getAllData(){
+    return allData;
+}
+
+QTcpSocket * ServerTCPRequest::getTCPSocket(){
+    return TCPSocket;
+}
+
 ServerTCPRequest::~ServerTCPRequest(){
     delete allData;
 }

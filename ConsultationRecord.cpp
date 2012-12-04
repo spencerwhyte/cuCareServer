@@ -42,8 +42,20 @@ void  ConsultationRecord::setDiagnosis(QString newDiagnosis){
 }
 
 
-ConsultationRecord::ConsultationRecord(): dateAndTime(new QDateTime()), reason(new QString()), OHIPNumber(new QString()), diagnosis(new QString()){
+ConsultationRecord::ConsultationRecord():
+    dateAndTime(new QDateTime()),
+    reason(new QString()),
+    OHIPNumber(new QString()),
+    diagnosis(new QString()){
 
+}
+
+
+ConsultationRecord::ConsultationRecord(QDateTime &dat, QString &r, QString &o, QString &d){
+    setDateAndTime(dat);
+    setReason(r);
+    setOHIPNumber(o);
+    setDiagnosis(d);
 }
 
 // Storable Interface Methods

@@ -38,7 +38,6 @@ int ServerObjectRequest::fillObjectRequest(StorableInterface ** requestObject, O
         requestType = objectRequestTypeForXMLRequestType(xmlRequestType);
     }else{
         return result;
-        qDebug() << "An error occured trying to fill the XML request, see ServerObjectRequest.cpp";
     }
     return 0;
 }
@@ -55,7 +54,6 @@ ServerObjectRequest::ObjectRequestType ServerObjectRequest::objectRequestTypeFor
     }else if(type == ServerXMLRequest::EqualityQuery){
         return EqualityQuery;
     }
-    qDebug() << "Assertion failure: Defaulted to Query in ServerObjectRequest.cpp";
     return Query;
 }
 

@@ -7,6 +7,12 @@
 #include "PatientRecord.h"
 #include "StorableFactory.h"
 
+/*
+  The purpose of the PatientAuditProcessManager is to perform an audit
+  process on the patient records and mark patients who have overdue,
+  completed and pending follow ups as having such things.
+
+*/
 class PatientAuditProcessManager : public ServerScheduledJobInterface
 {
     QTime * time;

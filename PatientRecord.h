@@ -59,6 +59,7 @@ public:
 
     // Constructor and destructor
     PatientRecord();
+    PatientRecord(QString &n,QString&p, QString&o, QString &pp);
     ~PatientRecord();
 };
 

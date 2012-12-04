@@ -26,6 +26,9 @@ class ServerScheduledJobManager : public QObject
     QList<ServerScheduledJobInterface *> * jobs;
     QList<QTimer *> * timers;
 
+    QList<ServerScheduledJobInterface *> * getJobs();
+    QList<QTimer *> * getTimers();
+
 public:
 
     /*

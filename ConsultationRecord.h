@@ -49,6 +49,7 @@ public:
    virtual QString className() const;
 
    // Constructor and destructor
+   ConsultationRecord(QDateTime &dat, QString &r, QString &o, QString &d);
     ConsultationRecord();
     ~ConsultationRecord();
 };

@@ -7,12 +7,11 @@
 
 
 
-CUCareServer::CUCareServer(QObject *parent) : jobManager (new ServerScheduledJobManager()){
+CUCareServer::CUCareServer(QObject *parent) : jobManager (new ServerScheduledJobManager()),centralDatabase(new CUCareDatabase(new QString("cuCare"), this)){
     qDebug() << "Starting Server...";
-    centralDatabase = new CUCareDatabase(new QString("cuCare"), this);
 
-    if(centralDatabase->isEmpty()){ // If the server is empty, populate it for the TA
-        populateServerTest(centralDatabase);
+    if(getCentralDatabase()->isEmpty()){ // If the server is empty, populate it for the TA
+        populateServerTest(getCentralDatabase());
     }
 
     if (!this->listen(QHostAddress::Any,60007)) {
@@ -21,16 +20,24 @@ CUCareServer::CUCareServer(QObject *parent) : jobManager (new ServerScheduledJob
         return;
     }
 
-    AuditProcessManager * aup = new AuditProcessManager(centralDatabase);
-    PatientAuditProcessManager * papm = new PatientAuditProcessManager(centralDatabase);
+    AuditProcessManager * aup = new AuditProcessManager(getCentralDatabase());
+    PatientAuditProcessManager * papm = new PatientAuditProcessManager(getCentralDatabase());
 
-    jobManager->scheduleJob(aup);
-    jobManager->scheduleJob(papm);
+    getJobManager()->scheduleJob(aup);
+    getJobManager()->scheduleJob(papm);
 
     qDebug() << this->serverPort();
     qDebug() << this->serverAddress();
 
     qDebug() << "Server Started";
+}
+
+ServerScheduledJobManager * CUCareServer::getJobManager(){
+    return jobManager;
+}
+
+CUCareDatabase * CUCareServer::getCentralDatabase(){
+    return centralDatabase;
 }
 
 CUCareServer::~CUCareServer(){
@@ -39,63 +46,13 @@ CUCareServer::~CUCareServer(){
 
 void CUCareServer::incomingConnection(int socket){
     qDebug() << "Incoming Connection Recieved";
-    CUCareServerThread * thread = new CUCareServerThread(socket, centralDatabase, this);
+    CUCareServerThread * thread = new CUCareServerThread(socket, getCentralDatabase(), this);
     connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
     thread->start();
 }
 
-/*void CUCareDatabase::addThreeEach(CUCareDatabase *database)
-{
-    QString pgenBase = "PatientGen_";
-    QString cgenBase = "ConsultGen_";
-    QString fgenBase = "FollowUpGen_";
-    for (int x = 0; x < 3; x++)
-    {
-        PatientRecord p;
-        QString counterGen = QString::number(x+1);
-        p.setName(pgenBase + counterGen);
-        QString ohip = QString::number(271828+x);
-        p.setOHIPNumber(ohip);
-        QString phoneGen = "613-555-";
-        phoneGen += QString::number(1000+x);
-        p.setPhoneNumber(phoneGen);
-        p.setPrimaryPhysician("Aaron Crozman");
-        database->addObject(p);
-        for (int y = 0; y < 3; y++)
-        {
-            ConsultationRecord c;
-            c.setDateAndTime(QDateTime::currentDateTime().addDays(qrand() % 5 - 3)); //Should be up to 3 days before or 1 day after today's date.
-            counterGen += "_" + QString::number(y+1);
-            c.setReason(cgenBase + counterGen);
-            c.setOHIPNumber(ohip);
-            database->addObject(c);
-            for (int z = 0; z < 3; z++)
-            {
-                FollowUpRecord f;
-                counterGen += "_" + QString::number(z+1);
-                f.setDetails(fgenBase + counterGen);
-                f.setDueDateTime(c.getDateAndTime().addDays(qrand() % 3)); //Should be 0-3 days after the consultation. Perhaps unrealistic, but good for testing.
-                switch (qrand() % 3)
-                {
-                case 0:
-                    f.setStatus(FollowUpRecord::COMPLETE);
-                    break;
-                case 1:
-                    f.setStatus(FollowUpRecord::PENDING);
-                    break;
-                default:
-                    f.setStatus(FollowUpRecord::OVERDUE);
-                }
-                f.setConsultationRecordId(c.getId());
-                database->addObject(f);
-            }
-        }
-    }
-}
-*/
-
 void CUCareServer::populateServerTest(CUCareDatabase *database){
-    qDebug() << "INITIALIZING SERVER";
+    qDebug() << "INITIALIZING SERVER FOR FIRST TIME";
 
     User u;
     u.setUsername("Spencer Whyte");
@@ -147,21 +104,21 @@ void CUCareServer::populateServerTest(CUCareDatabase *database){
     FollowUpRecord follow4;
     follow4.setConsultationRecordId(1);
     follow4.setStatus(FollowUpRecord::COMPLETE);
-    follow4.setDueDateTime(QDateTime().addMonths(2)); // Sets date and time to right now
+    follow4.setDueDateTime(QDateTime::currentDateTime().addMonths(2)); // Sets date and time to right now
     follow4.setDetails(QString("You require more time"));
     database->addObject(follow4);
 
     FollowUpRecord follow5;
     follow5.setConsultationRecordId(1);
     follow5.setStatus(FollowUpRecord::COMPLETE);
-    follow5.setDueDateTime(QDateTime().addDays(11)); // Sets date and time to right now
+    follow5.setDueDateTime(QDateTime::currentDateTime().addDays(11)); // Sets date and time to right now
     follow5.setDetails(QString("You require more mana"));
     database->addObject(follow5);
 
     FollowUpRecord follow6;
     follow6.setConsultationRecordId(1);
     follow6.setStatus(FollowUpRecord::PENDING);
-    follow6.setDueDateTime(QDateTime().addDays(-10)); // Sets date and time to right now
+    follow6.setDueDateTime(QDateTime::currentDateTime().addDays(-10)); // Sets date and time to right now
     follow6.setDetails(QString("It's never lupus"));
     database->addObject(follow6);
 
@@ -170,20 +127,20 @@ void CUCareServer::populateServerTest(CUCareDatabase *database){
     consult3.setDiagnosis(QString("Friends!"));
     consult3.setOHIPNumber(QString("314159"));
     consult3.setReason(QString("We thought they wanted to be friends"));
-    consult3.setDateAndTime(QDateTime().addDays(-10));
+    consult3.setDateAndTime(QDateTime::currentDateTime().addDays(-10));
     database->addObject(consult3);
 
     FollowUpRecord follow7;
     follow7.setConsultationRecordId(1);
     follow7.setStatus(FollowUpRecord::COMPLETE);
-    follow7.setDueDateTime(QDateTime().addMonths(1)); // Sets date and time to right now
+    follow7.setDueDateTime(QDateTime::currentDateTime().addMonths(1)); // Sets date and time to right now
     follow7.setDetails(QString("You require more minerals"));
     database->addObject(follow7);
 
     FollowUpRecord follow8;
     follow8.setConsultationRecordId(1);
     follow8.setStatus(FollowUpRecord::COMPLETE);
-    follow8.setDueDateTime(QDateTime().addMonths(5)); // Sets date and time to right now
+    follow8.setDueDateTime(QDateTime::currentDateTime().addMonths(5)); // Sets date and time to right now
     follow8.setDetails(QString("You require more Vespene gas"));
     database->addObject(follow8);
 

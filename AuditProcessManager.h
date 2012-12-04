@@ -12,6 +12,11 @@ class AuditProcessManager : public  ServerScheduledJobInterface
 {
     QTime * time;
     CUCareDatabase * database;
+    QSettings * settings;
+
+    QTime * getTime();
+    CUCareDatabase * getDatabase();
+    QSettings * getSettings();
 public:
     /*
   Sets the time of day when the audit process should run.

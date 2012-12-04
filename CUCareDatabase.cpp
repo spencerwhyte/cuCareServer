@@ -13,7 +13,6 @@
   */
 int CUCareDatabase::addObject(StorableInterface & object){
     if(!isDatabaseTableInitialized(object.className())){
-        qDebug() << "Decided it needed to be initialized";
         initializeTableWithSchemaOfObject(object);
     }
 
@@ -70,7 +69,6 @@ int CUCareDatabase::addObject(StorableInterface & object){
   */
 int CUCareDatabase::editObject(StorableInterface & object){
     if(!isDatabaseTableInitialized(object.className())){
-        qDebug() << "Decided it needed to be initialized";
         initializeTableWithSchemaOfObject(object);
     }
 
@@ -116,7 +114,6 @@ int CUCareDatabase::editObject(StorableInterface & object){
   */
 int CUCareDatabase::removeObject(StorableInterface & object){
     if(!isDatabaseTableInitialized(object.className())){
-        qDebug() << "Decided it needed to be initialized";
         initializeTableWithSchemaOfObject(object);
     }
 
@@ -146,7 +143,6 @@ int CUCareDatabase::removeObject(StorableInterface & object){
   */
 int CUCareDatabase::queryForObjects(StorableInterface & object,  QList< QMap < QString, QVariant> > & queryResults, bool equality){
     if(!isDatabaseTableInitialized(object.className())){
-        qDebug() << "Decided it needed to be initialized";
         initializeTableWithSchemaOfObject(object);
     }
     QMap<QString, QVariant> attributesAndValues;
@@ -185,11 +181,7 @@ int CUCareDatabase::queryForObjects(StorableInterface & object,  QList< QMap < Q
             queryResult.addBindValue(values.at(i).toString());
         }
     }
-
-
     queryResult.exec();
-    qDebug() << queryResult.lastError();
-    qDebug() << queryResult.lastQuery();
 
 
     while(queryResult.next()){
@@ -233,16 +225,12 @@ bool CUCareDatabase::isDatabaseTableInitialized(QString className){
 }
 
 bool CUCareDatabase::initializeTableWithSchemaOfObject(StorableInterface & firstObject){
-    qDebug() << "HERE!";
-    qDebug() << firstObject.className();
     QString schema("create table ");
     schema += firstObject.className();
     schema += " (id INTEGER PRIMARY KEY AUTOINCREMENT";
     QMap<QString, QVariant> attributesAndValues;
     firstObject.getAttributesAndValues(attributesAndValues);
     attributesAndValues.remove(firstObject.getIdentifierKey());
-
-    qDebug() <<"IDENTIFIER KEY" << firstObject.getIdentifierKey();
 
     QList<QString> keys = attributesAndValues.keys();
 
@@ -278,284 +266,9 @@ bool CUCareDatabase::createDatabase(QString * dn){
 
 
 QSqlQuery CUCareDatabase::executeQuery(const QString& sql){
-    qDebug() << sql;
+
     QSqlQuery query;
     query.exec(sql);
-    qDebug() << query.lastError();
+
     return query;
 }
-
-
-
-/*CUCareDatabase
-
-
-bool CUCareDatabase::initializePatientTable(){
-    executeQuery("create table patient "
-                 "(id integer primary key, "
-                 "name varchar(40), "
-                 "phonenumber varchar(40), "
-                 "ohipnumber varchar (40))");
-
-}
-
-bool CUCareDatabase::initializeConsultationTable(){
-    executeQuery("create table consultation "
-                 "(id integer primary key, "
-                 "ohipnumber varchar(40), "
-                 "dateandtime DATETIME, "
-                 "diagnosis varchar (4000), "
-                 "reason varchar (4000))");
-    return true;
-}
-
-bool CUCareDatabase::addConsultationRecord(const ConsultationRecord &c){
-    QString queryString = QString("INSERT into consultation ( ohipnumber, dateandtime, diagnosis, reason) values (?,?,?,?)");
-
-    QSqlQuery query;
-
-    query.prepare(queryString);
-
-    if(c.hasOHIPNumber()){
-        query.bindValue(0, *c.getOHIPNumber());
-    }
-    if(c.hasDateAndTime()){
-        query.bindValue(1, c.getDateAndTime()->toString(Qt::ISODate));
-    }
-    if(c.hasReason()){
-        query.bindValue(2, *c.getReason());
-    }
-    if(c.getDiagnosis()){
-        query.bindValue(3, *c.getDiagnosis());
-    }
-    query.exec();
-
-    return !(query.numRowsAffected() == 0 || query.numRowsAffected() == -1);
-}
-
-bool CUCareDatabase::editConsultationRecord(const ConsultationRecord &c){
-
-
-
-    QString queryString = QString("UPDATE consultation SET ohipnumber= :on, dateandtime= :dt, diagnosis= :di, reason= :re WHERE id= :id ");
-    qDebug() << "E1";
-    QSqlQuery query;
-    qDebug() << "E2";
-    query.prepare(queryString);
-    qDebug() << "E3";
-    if(c.hasOHIPNumber()){
-        qDebug() << "HAD OHIP NUMBER" << *c.getOHIPNumber();
-        query.bindValue(":on", *c.getOHIPNumber());
-    }cuCare
-    if(c.hasDateAndTime()){
-        qDebug() << "HAD DATE AND TIME: " << c.getDateAndTime()->toString(Qt::ISODate);
-        query.bindValue(":dt", *c.getDateAndTime());
-    }bool CUCareDatabase::isDatabaseInitialized(){
-    QStringList l = db.tables();
-    return (l.length() != 0);
-}
-
-void CUCareDatabase::createDatabase(){
-    db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("./cuCare.sqlite");
-    bool result = db.open();
-}
-
-
-    if(c.hasDiagnosis()){
-        qDebug() << "HAD DIAGNOSIS" << *c.getDiagnosis();
-        query.bindValue(":di", *c.getDiagnosis());
-    }
-    qDebug() << "E5";
-    if(c.hasReason()){
-        qDebug() << "HAD REASON : " << *c.getReason();
-        query.bindValue(":re", *c.getReason());
-    }
-
-    qDebug() << "E9";
-
-    query.bindValue(":id",*c.getId());
-
- qDebug() << "E10";
-    query.exec();
-
-    qDebug() << query.lastError();
- qDebug() << "E19";
-    return !(query.numRowsAffected() == 0 || query.numRowsAffected() == -1);
-}
-bool CUCareDatabase::isDatabaseInitialized(){
-    QStringList l = db.tables();
-    return (l.length() != 0);
-} QString queryString = QString("INSERT into consultation ( ohipnumber, dateandtime, diagnosis, reason) values (?,?,?,?)");
-
-    QSqlQuery query;
-
-    query.prepare(queryString);
-
-    if(c.hasOHIPNumber()){
-        query.bindValue(0, *c.getOHIPNumber());
-    }
-    if(c.hasDateAndTime()){
-        query.bindValue(1, c.getDateAndTime()->toString(Qt::ISODate));
-    }
-    if(c.hasReason()){
-        query.bindValue(2, *c.getReason());
-    }
-    if(c.getDiagnosis()){
-        query.bindValue(3, *c.getDiagnosis());
-    }
-    query.exec();
-
-    return !(query.numRowsAffected() == 0 || query.numRowsAffected() == -1);
-
-void CUCareDatabase::createDatabase(){
-    db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("./cuCare.sqlite");
-    bool result = db.open();
-}
-
-
-bool CUCareDatabase::initializeUserTable(){
-    executeQuery("create table user "
-                 "(id integer primary key, "
-                 "username varchar(40) ,"
-                 "usertype varchar (40))");
-    return true;
-}
-
-
-bool CUCareDatabase::initializeDatabase(){
-    qDebug() << "Initializing Database...";
-    initializePatientTable();
-    initializeConsultationTable();
-    initializeUserTable();
-    qDebug() << "Database Initialized";
-    retubool CUCareDatabase::isDatabaseInitialized(){
-    QStringList l = db.tables();
-    return (l.length() != 0);
-}
-
-void CUCareDatabase::createDatabase(){
-    db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("./cuCare.sqlite");
-    bool result = db.open();
-}
-
-rn true;
-}
-
- bool CUCareDatabase::addUser(const User& u){
-     QString queryString = QString("INSERT into user (username, usertype) values (\"").append(u.getUsername()).append("\",\"").append(u.stringForUserType()).append("\")");
-     QSqlQuery query = executeQuery(queryString);
-     qDebug() << query.numRowsAffected();
-     return !(query.numRowsAffected() == 0 || query.numRowsAffected() == -1);
- }
-
-
- bool CUCareDatabase::addPatientRecord(const PatientRecord& p){
-     qDebug() << "HERE";
-     qDebug() << *p.getName();
-     qDebug() << *p.getPhoneNumber();
-     qDebug() << *p.getOHIPNumber();
-     QString queryString("INSERT into patient (name, phonenumber, ohipnumber) values (");
-     queryString.append("\"");
-     queryString.append(*p.getName());
-     queryString.append("\",\"");
-     queryString.append(*p.getPhoneNumber());
-     queryString.append("\",\"");
-     queryString.append(*p.getOHIPNumber());
-     queryString.append("\")");
-     qDebug() << "HERE";
-
-     QSqlQuery query = executeQuery(queryString);
-
-     qDebug() << query.numRowsAffected();
-     return !(query.numRowsAffected() == 0 || query.numRowsAffected() == -1);
- }
-
-
-
-
-bool CUCareDatabase::authenticateUser(User& u){
-    QSqlQuery query = executeQuery(QString("SELECT * FROM user WHERE username=\"").append(u.getUsername()).append("\""));
-    if(query.next()){ // We found at least one result
-        qDebug() << "USERCUCareServer * server, TYPE: " << query.value(2).toString();
-        u.setUserTypeForString(new QString(query.value(2).toString()));
-        return true;
-    }
-    return false;
-}
-
-bool CUCareDatabase::queryPatientRecord(PatientRecord & p,QList<PatientRecord> &list){
-    QString query("SELECT * FROM patient");
-    if(p.hasName() || p.hasOHIPNumber() || p.hasPhoneNumber()){
-        query.append(" WHERE ");
-        if(p.hasName()){
-            query.append("name like \"%").append(*p.getName()).append("%\" ");
-        }
-        if(p.hasPhoneNumber()){
-            if(p.hasName()){
-                query.append(" AND ");
-            }
-            query.append("phonenumbe    // Constructor
-    CUCareServer();r like \"%").append(*p.getPhoneNumber()).append("%\" ");
-        }
-        if(p.hasOHIPNumber()){
-            if(p.hasName() || p.hasPhoneNumber()){
-                query.append(" AND ");
-            }
-            query.append("ohipnumber like \"%").append(*p.getOHIPNumber()).append("%\" ");
-        }
-    }
-    QSqlQuery queryResult = executeQuery(query);
-    while(queryResult.next()){
-        PatientRecord  * currentP = new PatientRecord();
-        currentP->setName(new QString(queryResult.value(1).toString()));
-        currentP->setPhoneNumber(new QString(queryResult.value(2).toString()));
-        currentP->setOHIPNumber(new QString(queryResult.value(3).toString()));
-        list.append(*currentP);
-
-    }
-    return true;
-}
-
-
-bool CUCareDatabase::queryConsultationRecord(ConsultationRecord & c,QList<ConsultationRecord> &list){
-    QString query("SELECT * FROM consultation");
-    if(c.hasOHIPNumber()){
-        query.append(" WHERE ");
-        if(c.hasOHIPNumber()){
-            query.append("ohipnumb    // Constructor
-    CUCareServer();er = \"").append(*c.getOHIPNumber()).append("\" ");
-        }
-    }
-
-    QSqlQuery queryResult = executeQuery(query);
-
-    while(queryResult.next()){
-        ConsultationRecord  * current = new ConsultationRecord();
-
-        current->setId(new QString(queryResult.value(0).toString()));
-        current->setOHIPNumber(new QString(queryResult.value(1).toString()));
-        current->setDateAndTime(new QDateTime(queryResult.value(2).toDateTime()));
-        current->setDiagnosis(new QString(queryResult.value(3).toString()));
-        current->setReason(new QString(queryResult.value(4).toString()));
-
-        list.append(*current);
-
-    }
-    return true;
-}
-
-CUCareDatabase::CUCareDatabase(QObject *parent) :
-    QObject(parent)
-{
-    createDatabase();
-    if(!isDatabaseInitialized()){
-        initializeDatabase();
-    }
-
-}
-
-
-*/
