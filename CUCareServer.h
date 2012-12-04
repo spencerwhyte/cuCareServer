@@ -37,6 +37,12 @@ private slots:
 private:
     void populateServerTest(CUCareDatabase *database);
 
+    /*
+      Added by Aaron Crozman (Student #100817740)
+      Adds three patients, then for each of those patients, adds three consultation records, then adds three followups for each of those.
+      */
+    void addThreeEach(CUCareDatabase *database);
+
 
 };
 

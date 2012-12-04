@@ -44,6 +44,54 @@ void CUCareServer::incomingConnection(int socket){
     thread->start();
 }
 
+void CUCareDatabase::addThreeEach(CUCareDatabase *database)
+{
+    QString pgenBase = "PatientGen_";
+    QString cgenBase = "ConsultGen_";
+    QString fgenBase = "FollowUpGen_";
+    for (int x = 0; x < 3; x++)
+    {
+        PatientRecord p;
+        QString counterGen = QString::number(x+1);
+        p.setName(pgenBase + counterGen);
+        QString ohip = QString::number(271828+x);
+        p.setOHIPNumber(ohip);
+        QString phoneGen = "613-555-";
+        phoneGen += QString::number(1000+x);
+        p.setPhoneNumber(phoneGen);
+        p.setPrimaryPhysician("Aaron Crozman");
+        database->addObject(p);
+        for (int y = 0; y < 3; y++)
+        {
+            ConsultationRecord c;
+            c.setDateAndTime(QDateTime::currentDateTime().addDays(qrand() % 5 - 3)); //Should be up to 3 days before or 1 day after today's date.
+            counterGen += "_" + QString::number(y+1);
+            c.setReason(cgenBase + counterGen);
+            c.setOHIPNumber(ohip);
+            database->addObject(c);
+            for (int z = 0; z < 3; z++)
+            {
+                FollowUpRecord f;
+                counterGen += "_" + QString::number(z+1);
+                f.setDetails(fgenBase + counterGen);
+                f.setDueDateTime(c.getDateAndTime().addDays(qrand() % 3)); //Should be 0-3 days after the consultation. Perhaps unrealistic, but good for testing.
+                switch (qrand() % 3)
+                {
+                case 0:
+                    f.setStatus(FollowUpRecord::COMPLETE);
+                    break;
+                case 1:
+                    f.setStatus(FollowUpRecord::PENDING);
+                    break;
+                default:
+                    f.setStatus(FollowUpRecord::OVERDUE);
+                }
+                f.setConsultationRecordId(c.getId());
+                database->addObject(f);
+            }
+        }
+    }
+}
 
 void CUCareServer::populateServerTest(CUCareDatabase *database){
     qDebug() << "INITIALIZING SERVER";
